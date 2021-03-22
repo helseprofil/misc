@@ -1,0 +1,17 @@
+#+Title: UDir check file
+
+* UDIR data
+- Download file from [[https://www.udir.no/tall-og-forskning/statistikk/statistikk-grunnskole/resultater-fra-elevundersokelsen-pa-7.-og-10.-trinn/elevundersokelsen--mobbing--sortert-etter-fylker-og-skoler/][UDIR website]]
+- The downloaded CSV file has excel specific metadata and needs to be converted to standard CSV file with =;= seperator.
+- Open the file and save as ordinary CSV file.
+* Arguments
+The file has wide structure with infomation about:
+- Year
+- Trinn
+- Gender
+are embedded in the column names. Therefore deeds to specify:
+
+1. Which columns to be selected 
+2. What information available on these columns
+
+
