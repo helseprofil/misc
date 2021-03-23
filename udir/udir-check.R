@@ -1,22 +1,8 @@
-
-## UDir fil
-udirfil <- "f:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/VALIDERING/kodechk/udir/20210322-1509_GSK.ElevundersoekelsenG.csv"
-
-## KUBE fil
-kubefil <- "F:\\Forskningsprosjekter\\PDB 2455 - Helseprofiler og til_\\PRODUKSJON\\PRODUKTER\\KUBER\\KOMMUNEHELSA\\KH2021NESSTAR\\MOBBING_1aar_0_2020-08-14-13-13.csv"
-
-
-## Which columns in the Udir raw data
-Kommunekode = "D"
-Organisasjonsnummer = "E"
-Kolonne = c("J", "K", "L")
-
-## What these columns have
-J = c(aar = 2016, kjonn = 0, trinn + = 7)
-K = c(aar = 2016, kjonn = 1, trinn = 7) 
-L = c(aar = 2016, kjonn = 2, trinn = 7)
-
-
+## udirfile: CSV file downloaded from UDir website
+## kubefile: CSV file from Kube run
+## kom: Which column for Kommunekode in UDir dataset
+## org: Which column for Organisasjonsnummer in UDir dataset
+## cols: Which columns will be use for comparison
 
 udir_check <- function(udirfile = udirfil,
                        kubefile = kubefil,
@@ -24,6 +10,11 @@ udir_check <- function(udirfile = udirfil,
                        org = Organisasjonsnummer,
                        cols = Kolonne){
 
+  pkg <- c("data.table", "gt")
+  newpkg <- pkg[!(pkg  %in% installed.packages()[, "Package"])]
+  if (length(newpkg)) install.packages(newpkg)
+  sapply(pkg, require, character.only = TRUE)
+  
   ## csv file extracted from UDir website start with sep= and whitespace seperated
   ## Loading needs to exclude first line with sep= and long colnames in second line
   ## But the each line ends with \r that need to be cleaned up
@@ -74,9 +65,44 @@ udir_check <- function(udirfile = udirfil,
 
   ## Kube data
   kdt <- data.table::fread(kubefile)
-  
-  kdt[mdt, on = c(GEO = "geo", AAR = "aar", KJONN = "kjonn", TRINN = "trinn")]
 
   
+  DT <- kdt[mdt, on = c(GEO = "geo", AAR = "aar", KJONN = "kjonn", TRINN = "trinn")]
+
+  ## GEO setup
+  ## geotbl <-
+  ##   data.table::fread("https://raw.githubusercontent.com/helseprofil/misc/main/dataset/geoTable.csv")
+  geomrg <- data.table::fread("https://raw.githubusercontent.com/helseprofil/misc/main/dataset/kommuneMerge.csv")
+  geodel <-
+    data.table::fread("https://raw.githubusercontent.com/helseprofil/misc/main/dataset/kommuneDelt.csv")
+
+  geoUt <- c(unique(geomrg$code), unique(geodel$code))
+
+  DT <- DT[!(GEO  %in% geoUt),]
   
-}
+  ## Show the prikk data
+  DT[, check := fcase(udir == "*" & SPVFLAGG == 0, 2,
+                      udir != "*" & SPVFLAGG == 3, 1,
+                      default = 0)]
+  
+  DT <- DT[order(-check)][]
+
+  ## Make html table
+  udiTbl <- gt(DT) %>%
+      tab_header(
+        title = md("UDir prikking mot Kube")
+      ) %>%
+      tab_style(
+        style = list(
+          cell_fill(color = "#F9E3AA")),
+        locations = cells_body(
+          rows = check == 2))%>%
+      tab_style(
+        style = list(
+          cell_fill(color = "lightgreen")),
+        locations = cells_body(
+          rows = check == 1))
+
+
+    udiTbl
+  }
