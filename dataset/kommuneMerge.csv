@@ -1,0 +1,146 @@
+code,name,prev,prevName,year
+1103,Stavanger,1141, Finnøy,2020
+1103,Stavanger,1142, Rennesøy,2020
+1108,Sandnes,1102, Sandnes,2020
+1108,Sandnes,1129, Forsand,2020
+1506,Molde,1502, Molde,2020
+1506,Molde,1543, Nesset,2020
+1506,Molde,1545, Midsund,2020
+1507,�lesund,1504, Ålesund,2020
+1507,�lesund,1523, Ørskog,2020
+1507,�lesund,1529, Skodje,2020
+1507,�lesund,1534, Haram,2020
+1507,�lesund,1546, Sandøy,2020
+1577,Volda,1444, Hornindal,2020
+1577,Volda,1519, Volda,2020
+1578,Fjord,1524, Norddal,2020
+1578,Fjord,1526, Stordal,2020
+1579,Hustadvika,1548, Fræna,2020
+1579,Hustadvika,1551, Eide,2020
+1806,Narvik,1805, Narvik,2020
+1806,Narvik,1850, Divtasvuodna - Tysfjord,2020
+1806,Narvik,1854, Ballangen,2020
+1875,Hamar�y - H�bmer,1849, Hamarøy - Hábmer,2020
+1875,Hamar�y - H�bmer,1850, Divtasvuodna - Tysfjord,2020
+3002,Moss,104, Moss,2020
+3002,Moss,136, Rygge,2020
+3005,Drammen,602, Drammen,2020
+3005,Drammen,625, Nedre Eiker,2020
+3005,Drammen,711, Svelvik,2020
+3014,Indre �stfold,122, Trøgstad,2020
+3014,Indre �stfold,123, Spydeberg,2020
+3014,Indre �stfold,124, Askim,2020
+3014,Indre �stfold,125, Eidsberg,2020
+3014,Indre �stfold,138, Hobøl,2020
+3020,Nordre Follo,213, Ski,2020
+3020,Nordre Follo,217, Oppegård,2020
+3025,Asker,220, Asker,2020
+3025,Asker,627, Røyken,2020
+3025,Asker,628, Hurum,2020
+3026,Aurskog-H�land,121, Rømskog,2020
+3026,Aurskog-H�land,221, Aurskog-Høland,2020
+3030,Lillestr�m,226, Sørum,2020
+3030,Lillestr�m,227, Fet,2020
+3030,Lillestr�m,231, Skedsmo,2020
+3802,Holmestrand,702, Holmestrand,2018
+3802,Holmestrand,714, Hof,2018
+3802,Holmestrand,715, Holmestrand,2020
+3802,Holmestrand,713, Sande,2020
+3803,T�nsberg,704, Tønsberg,2020
+3803,T�nsberg,716, Re,2020
+3804,Sandefjord,706, Sandefjord,2017
+3804,Sandefjord,719, Andebu,2017
+3804,Sandefjord,720, Stokke,2017
+3804,Sandefjord,710, Sandefjord,2020
+3805,Larvik,709, Larvik,2018
+3805,Larvik,728, Lardal,2018
+3805,Larvik,712, Larvik,2020
+3811,F�rder,722, Nøtterøy,2018
+3811,F�rder,723, Tjøme,2018
+3811,F�rder,729, Færder,2020
+3817,Midt-Telemark,821, Bø,2020
+3817,Midt-Telemark,822, Sauherad,2020
+4204,Kristiansand,1001, Kristiansand,2020
+4204,Kristiansand,1017, Songdalen,2020
+4204,Kristiansand,1018, Søgne,2020
+4205,Lindesnes,1002, Mandal,2020
+4205,Lindesnes,1021, Marnardal,2020
+4205,Lindesnes,1029, Lindesnes,2020
+4225,Lyngdal,1027, Audnedal,2020
+4225,Lyngdal,1032, Lyngdal,2020
+4602,Kinn,1401, Flora,2020
+4602,Kinn,1439, Vågsøy,2020
+4618,Ullensvang,1227, Jondal,2020
+4618,Ullensvang,1228, Odda,2020
+4618,Ullensvang,1231, Ullensvang,2020
+4621,Voss,1234, Granvin,2020
+4621,Voss,1235, Voss,2020
+4624,Bj�rnafjorden,1241, Fusa,2020
+4624,Bj�rnafjorden,1243, Os,2020
+4626,�ygarden,1245, Sund,2020
+4626,�ygarden,1246, Fjell,2020
+4626,�ygarden,1259, Øygarden,2020
+4631,Alver,1256, Meland,2020
+4631,Alver,1260, Radøy,2020
+4631,Alver,1263, Lindås,2020
+4640,Sogndal,1418, Balestrand,2020
+4640,Sogndal,1419, Leikanger,2020
+4640,Sogndal,1420, Sogndal,2020
+4647,Sunnfjord,1430, Gaular,2020
+4647,Sunnfjord,1431, Jølster,2020
+4647,Sunnfjord,1432, Førde,2020
+4647,Sunnfjord,1433, Naustdal,2020
+4649,Stad,1441, Selje,2020
+4649,Stad,1443, Eid,2020
+5001,Trondheim,1662, Klæbu,2018
+5001,Trondheim,5030, Klæbu,2020
+5001,Trondheim,1601, Trondheim,2018
+5006,Steinkjer,1702, Steinkjer,2018
+5006,Steinkjer,1724, Verran,2018
+5006,Steinkjer,5004, Steinkjer,2020
+5006,Steinkjer,5039, Verran,2020
+5007,Namsos,1703, Namsos,2018
+5007,Namsos,1725, Namdalseid,2018
+5007,Namsos,1748, Fosnes,2018
+5007,Namsos,5005, Namsos,2020
+5007,Namsos,5040, Namdalseid,2020
+5007,Namsos,5048, Fosnes,2020
+5054,Indre Fosen,1624, Rissa,2018
+5054,Indre Fosen,1718, Leksvik,2018
+5055,Heim,1612, Hemne,2018
+5055,Heim,1613, Snillfjord,2018
+5055,Heim,5011, Hemne,2020
+5055,Heim,5012, Snillfjord,2020
+5055,Heim,1571, Halsa,2020
+5056,Hitra,1613, Snillfjord,2018
+5056,Hitra,1617, Hitra,2018
+5056,Hitra,5012, Snillfjord,2020
+5056,Hitra,5013, Hitra,2020
+5057,�rland,1621, Ørland,2018
+5057,�rland,1627, Bjugn,2018
+5057,�rland,5015, Ørland,2020
+5057,�rland,5017, Bjugn,2020
+5058,�fjord,1630, Åfjord,2018
+5058,�fjord,1632, Roan,2018
+5058,�fjord,5018, Åfjord,2020
+5058,�fjord,5019, Roan,2020
+5059,Orkland,1613, Snillfjord,2018
+5059,Orkland,1622, Agdenes,2018
+5059,Orkland,1636, Meldal,2018
+5059,Orkland,1638, Orkdal,2018
+5059,Orkland,5012, Snillfjord,2020
+5059,Orkland,5016, Agdenes,2020
+5059,Orkland,5023, Meldal,2020
+5059,Orkland,5024, Orkdal,2020
+5060,N�r�ysund,1750, Vikna,2018
+5060,N�r�ysund,1751, Nærøy,2018
+5060,N�r�ysund,5050, Vikna,2020
+5060,N�r�ysund,5051, Nærøy,2020
+5406,Hammerfest,2004, Hammerfest,2020
+5406,Hammerfest,2017, Kvalsund,2020
+5412,Tjeldsund,1852, Tjeldsund,2020
+5412,Tjeldsund,1913, Skånland,2020
+5421,Senja,1927, Tranøy,2020
+5421,Senja,1928, Torsken,2020
+5421,Senja,1929, Berg,2020
+5421,Senja,1931, Lenvik,2020
