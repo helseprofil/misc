@@ -3,12 +3,14 @@
 ## kom: Which column for Kommunekode in UDir dataset
 ## org: Which column for Organisasjonsnummer in UDir dataset
 ## cols: Which columns will be use for comparison
+## skip: If csv file starts with skip=
 
 udir_check <- function(udirfile = udirfil,
                        kubefile = kubefil,
                        kom = Kommunekode,
                        org = Organisasjonsnummer,
-                       cols = Kolonne){
+                       cols = Kolonne,
+                       skip = uskip){
 
   pkg <- c("data.table", "gt")
   newpkg <- pkg[!(pkg  %in% installed.packages()[, "Package"])]
@@ -18,13 +20,19 @@ udir_check <- function(udirfile = udirfil,
   ## csv file extracted from UDir website start with sep= and whitespace seperated
   ## Loading needs to exclude first line with sep= and long colnames in second line
   ## But the each line ends with \r that need to be cleaned up
-  udt <- data.table::fread(udirfile, skip = 2, sep = "\t", fill = TRUE)
+  ## Unless the sep is ; or , then fread as normal
+  if (skip){
+    udt <- data.table::fread(udirfile, skip = 2, sep = "\t", fill = TRUE)
+    
+    for (j in seq_len(ncol(udt))){
+      if(class(udt[[j]]) == 'character')
+        data.table::set(udt, j = j, value = gsub("\r", "", udt[[j]]))
+    }
 
-  for (j in seq_len(ncol(udt))){
-    if(class(udt[[j]]) == 'character')
-      data.table::set(udt, j = j, value = gsub("\r", "", udt[[j]]))
+  } else {
+    udt <- data.table::fread(udirfile)
   }
-
+  
   ## Use Excel colnames to make specification for column easier
   ## especially when colnames is very long. But watch out for F and T!
   xlcols <- c(LETTERS,
