@@ -18,14 +18,19 @@ dt <- dt[, lapply(.SD, as.vector)]
 ## length(unique(dt$v4[dt$aar == 2016]))
 ## length(unique(dt$v4[dt$aar == 2017]))
 
-impnull <- function(dt){
-  ref <- sort(unique(dt$v4))
-  aar <- unique(dt$aar)
+## dt - dataset
+## var - Colname to be checked
+## year - Colname for year
+impnull <- function(dt, year, var){
+  var <- as.character(deparse(substitute(var)))
+  year <- as.character(deparse(substitute(year)))
+  ref <- sort(unique(dt[[var]]))
+  aar <- unique(dt[[year]])
   nn <- vector(mode = "list", length = length(aar))
 
   for (i in seq_along(aar)){
     yr <- aar[i]
-    dd <- setdiff(ref, unique(dt$v4[dt$aar == yr]))
+    dd <- setdiff(ref, unique(dt[[var]][dt[[year]] == yr]))
     ## print(dd)
     nn[[i]] <- dd
     names(nn)[i] <- paste0("yr",yr)
@@ -33,5 +38,5 @@ impnull <- function(dt){
   return(nn)
 }
 
-nn <- impnull(dt)
+nn <- impnull(dt, aar, v4)
 nn
