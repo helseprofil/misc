@@ -21,16 +21,16 @@ length(unique(dt$v4[dt$aar == 2016]))
 length(unique(dt$v4[dt$aar == 2017]))
 
 impnull <- function(dt){
+  ref <- sort(unique(dt$v4))
   aar <- unique(dt$aar)
-  nn <- vector(mode = "list", length = 2)
-  for (i in seq_along(aar)){
+  nn <- vector(mode = "list", length = length(aar))
 
+  for (i in seq_along(aar)){
     yr <- aar[i]
     dd <- setdiff(ref, unique(dt$v4[dt$aar == yr]))
     ## print(dd)
     nn[[i]] <- dd
     names(nn)[i] <- paste0("yr",yr)
-
   }
   return(nn)
 }
