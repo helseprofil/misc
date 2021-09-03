@@ -6,19 +6,17 @@ dt <- read_dta(file.path(path, "Dode_2016_2017.dta"))
 
 library(data.table)
 setDT(dt)
-dt[, .N, keyby=aar]
+## dt[, .N, keyby=aar]
 
 dt <- dt[, lapply(.SD, as.vector)]
-str(dt)
+## str(dt)
 
-ref <- sort(unique(dt$v4))
-ref
-aar <- unique(dt$aar)
-aar
+## ref <- sort(unique(dt$v4))
+## aar <- unique(dt$aar)
 
-length(ref)
-length(unique(dt$v4[dt$aar == 2016]))
-length(unique(dt$v4[dt$aar == 2017]))
+## length(ref)
+## length(unique(dt$v4[dt$aar == 2016]))
+## length(unique(dt$v4[dt$aar == 2017]))
 
 impnull <- function(dt){
   ref <- sort(unique(dt$v4))
