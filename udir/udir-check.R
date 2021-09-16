@@ -41,7 +41,7 @@ udir_check <- function(udirfile = udirfil,
 
   setnames(udt, new = xlcols)
 
-
+  
   udt <- udt[get(kom) == get(org), ]
 
   mdt <- melt(udt,
