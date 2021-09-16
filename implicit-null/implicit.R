@@ -33,7 +33,7 @@ impnull <- function(dt, year, var){
     dd <- setdiff(ref, unique(dt[[var]][dt[[year]] == yr]))
     ## print(dd)
     nn[[i]] <- dd
-    names(nn)[i] <- paste0("yr",yr)
+    names(nn)[i] <- as.character(yr)
   }
   return(nn)
 }
