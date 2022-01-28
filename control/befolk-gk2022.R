@@ -1,29 +1,22 @@
 # Sjekk mot SSB sine tall
 if(!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("helseprofil/orgdata")
-normalizePath(readClipboard(), win = "/")
+## normalizePath(readClipboard(), win = "/")
 
 library(orgdata)
+library(data.table)
 update_orgdata(ref = "dev")
 
 gk <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/PRODUKTER/KUBER/KOMMUNEHELSA/DATERT/csv/BEFOLK_GK_2022-01-21-10-14.csv"
 df <- read_file(gk)
 
-
 str(df)
-df[, LEVEL := fcase(GEO == 0, "land",
-                    nchar(GEO) %in% 3:4, "kommune",
+df[, LEVEL := fcase(nchar(GEO) %in% 3:4, "kommune",
                     nchar(GEO) %in% 1:2, "fylke",
                     nchar(GEO) %in% 5:6, "bydel",
                     default = "none")]
-
 df
-
-agep <- df[, .N, by=ALDER]
-agep[, agp := sub("_", ":", ALDER)]
-setnames(agep, c("ALDER", "agp"), c("to","AGE"))
-agep[, N := NULL]
-agep
+df[GEO == 0, LEVEL := "land"]
 
 
 
