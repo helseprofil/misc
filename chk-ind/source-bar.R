@@ -1,4 +1,4 @@
-packages <- c("data.table", "haven")
+packages <- c("data.table", "haven", "devtools")
 
 ipkg <- function(pkg){
   newp <- pkg[!(pkg %in% installed.packages()[, "Package"])]
@@ -7,10 +7,6 @@ ipkg <- function(pkg){
 }
 
 ipkg(packages)
-
-if (!require(devtools)) install.packages("remotes",
-                                         repos = "https://cran.uib.no",
-                                         dependencies = TRUE)
 
 indUrl <-"https://raw.githubusercontent.com/helseprofil/misc/main/chk-ind/chk-bar.R"
 devtools::source_url(indUrl)
