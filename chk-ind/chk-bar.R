@@ -1,13 +1,3 @@
-packages <- c("data.table", "haven")
-
-ipkg <- function(pkg){
-  newp <- pkg[!(pkg %in% installed.packages()[, "Package"])]
-  if(length(newp)) install.packages(newp, repos = "https://cran.uib.no", dependencies = TRUE)
-  sapply(pkg, require, character.only = TRUE)
-}
-
-ipkg(packages)
-
 ## indikator : fil for indikator
 ## barometer: fil for barometer
 ## base : Sti for disse filene
