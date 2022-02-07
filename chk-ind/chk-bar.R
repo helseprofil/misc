@@ -5,12 +5,13 @@
 check_bar <- function(type = c("FHP", "OVP"),
                       year = NULL,
                       geo = c("fylke", "kommune", "bydel"),
-                      indikator = NULL,
+                      indikator = null,
                       barometer = NULL,
                       base = NULL
                       ){
 
   type <- match.arg(type)
+  geo <- tolower(geo)
   geo <- match.arg(geo)
 
   if (is.null(base)){
