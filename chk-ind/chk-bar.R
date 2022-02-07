@@ -5,10 +5,12 @@
 check_bar <- function(type = c("FHP", "OVP"),
                       year = NULL,
                       geo = c("fylke", "kommune", "bydel"),
-                      indikator = null,
+                      indikator = NULL,
                       barometer = NULL,
                       base = NULL
                       ){
+  ##:ess-bp-start::browser@nil:##
+  browser(expr=is.null(.ESSBP.[["@5@"]]));##:ess-bp-end:##
 
   type <- match.arg(type)
   geo <- tolower(geo)
