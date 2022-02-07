@@ -9,8 +9,6 @@ check_bar <- function(type = c("FHP", "OVP"),
                       barometer = NULL,
                       base = NULL
                       ){
-  ##:ess-bp-start::browser@nil:##
-  browser(expr=is.null(.ESSBP.[["@5@"]]));##:ess-bp-end:##
 
   type <- match.arg(type)
   geo <- tolower(geo)
