@@ -1,3 +1,4 @@
+## year : Årgang filer
 ## indikator : fil for indikator
 ## barometer: fil for barometer
 ## base : Sti for disse filene
@@ -31,7 +32,7 @@ check_bar <- function(type = c("FHP", "OVP"),
   message("Leser filer fra ", path)
   cat("In progress ...")
 
-  ## Barometer
+  ## Barometer --------------------------------
   bar <- haven::read_dta(file.path(path, barometer))
 
   data.table::setDT(bar)
@@ -51,7 +52,7 @@ check_bar <- function(type = c("FHP", "OVP"),
   ## this makes it equivalent to indikator id
   ## bar[, kode := rev(indikator_kodet - 1)]
 
-  ## Indicator
+  ## Indicator --------------------------------
   cat("...")
   indraw <- haven::read_dta(file.path(path, indikator))
   
@@ -61,7 +62,7 @@ check_bar <- function(type = c("FHP", "OVP"),
   indraw[, setdiff(names(indraw), indVar) := NULL]
   ind <- indraw[SpraakId == "BOKMAAL"]
 
-  cat("... \n\n")
+  cat("... \n")
   withVar <- c("Aar", indV1)
   bar[ind, (withVar) := mget(withVar), on = c(stedskode_string = "Sted_kode", LPnr = "LPnr")]
 
