@@ -8,25 +8,37 @@ ipkg <- function(pkg){
 
 ipkg(packages)
 
-fpath <- "F:/Prosjekter/Kommunehelsa/PRODUKSJON/PRODUKTER/SSRS_filer/OVP/2020/Kommune/FigurOgTabell"
-indDTA <- "Indikator_ny.dta"
-barDTA <- "inndataBarometer.dta"
-
 ## indikator : fil for indikator
 ## barometer: fil for barometer
-## path : Sti for disse filene
+## base : Sti for disse filene
 
 check_bar <- function(type = c("FHP", "OVP"),
                       year = NULL,
                       geo = c("fylke", "kommune", "bydel"),
                       indikator = NULL,
                       barometer = NULL,
-                      path = NULL
+                      base = NULL
                       ){
 
-  cat("In progress ...")
   type <- match.arg(type)
   geo <- match.arg(geo)
+
+  if (is.null(base)){
+    base <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/PRODUKTER/SSRS_filer"
+  }
+
+  path <- file.path(base, type, year, geo, "FigurOgTabell")
+
+  if (is.null(barometer)){
+    barometer = "inndataBarometer.dta"
+  }
+
+  if (is.null(indikator)){
+    indikator <- ifelse(geo == "fylke", "Indikator_F.dta", "Indikator_ny.dta")
+  }
+
+  message("Leser filer fra ", path)
+  cat("In progress ...")
 
   ## Barometer
   bar <- haven::read_dta(file.path(path, barometer))
@@ -35,6 +47,7 @@ check_bar <- function(type = c("FHP", "OVP"),
   barV1 <- c("stedskode_string",
              "stedskode_numeric",
              "indikator_kodet",
+             "LPnr",
              "roede",
              "groenne",
              "hvitMprikk")
@@ -42,9 +55,10 @@ check_bar <- function(type = c("FHP", "OVP"),
 
   cat("...")
   data.table::setkey(bar, indikator_kodet)
+
   ## barometer id starts from 2 and is inverse of indikator id
   ## this makes it equivalent to indikator id
-  bar[, kode := rev(indikator_kodet - 1)]
+  ## bar[, kode := rev(indikator_kodet - 1)]
 
   ## Indicator
   cat("...")
@@ -58,12 +72,11 @@ check_bar <- function(type = c("FHP", "OVP"),
 
   cat("... \n\n")
   withVar <- c("Aar", indV1)
-  bar[ind, (withVar) := mget(withVar), on = c(stedskode_string = "Sted_kode", kode = "LPnr")]
-  setnames(bar, "kode", "LPnr")
-  bar
+  bar[ind, (withVar) := mget(withVar), on = c(stedskode_string = "Sted_kode", LPnr = "LPnr")]
 
-  outD <- bar[Verdi_lavesteGeonivaa == Verdi_referansenivaa, ][
+  verdiCol <- ifelse(geo == "fylke", "Verdi_mellomGeonivaa", "Verdi_lavesteGeonivaa")
+  outDT <- bar[get(verdiCol) == Verdi_referansenivaa, ][
     !is.na(roede) | !is.na(groenne) | !is.na(hvitMprikk)]
 
-  return(outD)
+  return(outDT)
 }
