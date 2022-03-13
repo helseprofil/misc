@@ -14,6 +14,8 @@ kh_install <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
   pkgRepo <- paste0("helseprofil/", pkg)
   remotes::install_github(pkgRepo)
 
+  msg <- paste0("You can now use `library(", pkg,")`")
+  message(msg)
   invisible()
 }
 
@@ -21,7 +23,6 @@ kh_install <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 ## Clone user branch for reproducibility ie. keep the same package version for
 ## dependencies
 kh_clone <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
-
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
@@ -43,6 +44,8 @@ kh_clone <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
     renv::restore()
   }
 
+  msg <- paste0("You can now use `library(", pkg,")`")
+  message(msg)
   invisible()
 }
 
