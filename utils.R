@@ -1,6 +1,5 @@
 ## Install specialized packages for KHelse
-kh_install <- c(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
-
+kh_install <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
@@ -14,3 +13,7 @@ kh_install <- c(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
   pkgRepo <- paste0("helseprofil/", pkg)
   remotes::install_github(pkgRepo)
 }
+
+
+## To use, run this code:
+## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
