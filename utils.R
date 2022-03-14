@@ -64,7 +64,7 @@ kh_repo <- function(pkg = c("orgdata",
   if (!fs::dir_exists(khRoot)) fs::dir_create(khRoot)
 
   branch <- switch(pkg,
-                   khfunctions = "main",
+                   khfunctions = "master",
                    "user")
 
   khPath <- file.path(khRoot, pkg)
