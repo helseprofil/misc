@@ -17,9 +17,9 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
-  if(!requireNamespace("remotes")) install.packages("remotes")
+  pkg_install("remotes")
 
-  if (any(installed.packages() == pkg)){
+  if (isTRUE( any(installed.packages() == pkg) )){
     unloadNamespace(pkg)
     remove.packages(pkg)
   }
@@ -56,8 +56,7 @@ kh_repo <- function(pkg = c("orgdata",
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
   pkgs <- c("gert", "fs", "renv")
-  new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-  if(length(new.pkgs)) install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
+  pkg_install(pkgs)
 
   khRoot <- file.path(fs::path_home(), "helseprofil")
   if (!fs::dir_exists(khRoot)) fs::dir_create(khRoot)
@@ -91,3 +90,8 @@ kh_arg <- function(...){
   return(pkg)
 }
 
+pkg_install <- function(pkgs){
+  new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+  if(length(new.pkgs)) install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
+  invisible()
+}
