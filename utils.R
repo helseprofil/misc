@@ -1,4 +1,10 @@
-## Install specialized packages for KHelse
+## To use, run this code:
+## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
+## kh_install(orgdata)
+## kh_restore(khfunctions)
+
+
+## Install specialized packages for KHelse ------------------------------
 kh_install <- function(...){
   pkg <- kh_arg(...)
   kh_package(pkg)
@@ -85,7 +91,3 @@ kh_arg <- function(...){
   return(pkg)
 }
 
-## To use, run this code:
-## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
-## kh_install(orgdata)
-## kh_restore(khfunctions)
