@@ -1,5 +1,13 @@
 ## Install specialized packages for KHelse
-kh_install <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
+kh_install <- function(...){
+  pkg <- kh_arg(...)
+  kh_package(pkg)
+  msg <- paste0("You can now use `library(", pkg,")`")
+  message(msg)
+  invisible()
+}
+
+kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
@@ -13,39 +21,15 @@ kh_install <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
   message("Start installing package ", pkg)
   pkgRepo <- paste0("helseprofil/", pkg)
   remotes::install_github(pkgRepo)
-
-  msg <- paste0("You can now use `library(", pkg,")`")
-  message(msg)
   invisible()
 }
 
 
 ## Restore user branch for reproducibility ie. keep the same package version for
 ## dependencies
-kh_restore <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat", "khfunctions")){
-  pkg <- match.arg(pkg)
-  if (length(pkg) > 1) stop("Can't install more than one package at a time!")
-
-  pkgs <- c("gert", "fs", "renv")
-  sapply(pkgs, function(x) {
-    if(!requireNamespace(x))
-      install.packages(x, repos = "https://cloud.r-project.org/")})
-
-  khRoot <- file.path(fs::path_home(), "helseprofil")
-  if (!fs::dir_exists(khRoot)) fs::dir_create(khRoot)
-
-  khPath <- file.path(khRoot, pkg)
-  if (!fs::dir_exists(khPath)){
-    khRepo <- paste0("https://github.com/helseprofil/", pkg)
-    gert::git_clone(khRepo, path = khPath, branch = "user")
-    setwd(khPath)
-    renv::restore()
-  } else {
-    setwd(khPath)
-    gert::git_pull()
-    renv::restore()
-  }
-
+kh_restore <- function(...){
+  pkg <- kh_arg(...)
+  kh_repo(pkg)
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R")
     msg <- paste0("You can now use file `SePaaFil.R` in ", khPath)
@@ -57,6 +41,51 @@ kh_restore <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat", "khfu
   invisible()
 }
 
+kh_repo <- function(pkg = c("orgdata",
+                            "norgeo",
+                            "KHompare",
+                            "bat2bat",
+                            "khfunctions")){
+  pkg <- match.arg(pkg)
+  if (length(pkg) > 1) stop("Can't install more than one package at a time!")
+
+  pkgs <- c("gert", "fs", "renv")
+  new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+  if(length(new.pkgs)) install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
+
+  khRoot <- file.path(fs::path_home(), "helseprofil")
+  if (!fs::dir_exists(khRoot)) fs::dir_create(khRoot)
+
+  khPath <- file.path(khRoot, pkg)
+  if (!fs::dir_exists(khPath)){
+    khRepo <- paste0("https://github.com/helseprofil/", pkg)
+    gert::git_clone(khRepo, path = khPath, branch = "user")
+    setwd(khPath)
+    renv::activate()
+    renv::restore()
+  } else {
+    setwd(khPath)
+    gert::git_pull()
+    renv::restore()
+  }
+
+  invisible()
+}
+
+kh_arg <- function(...){
+  pkg <- tryCatch({
+    unlist(list(...))
+  },
+  error = function(err){err})
+
+  if (is(pkg, "error")){
+    dots <- eval(substitute(alist(...)))
+    pkg <- sapply(as.list(dots), deparse)
+  }
+  return(pkg)
+}
 
 ## To use, run this code:
 ## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
+## kh_install(orgdata)
+## kh_restore(khfunctions)
