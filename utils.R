@@ -31,8 +31,10 @@ kh_restore <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat", "khfu
     if(!requireNamespace(x))
       install.packages(x, repos = "https://cloud.r-project.org/")})
 
-  khPath <- file.path(fs::path_home(), "helseprofil", pkg)
+  khRoot <- file.path(fs::path_home(), "helseprofil")
+  if (!fs::dir_exists(khRoot)) fs::dir_create(khRoot)
 
+  khPath <- file.path(khRoot, pkg)
   if (!fs::dir_exists(khPath)){
     khRepo <- paste0("https://github.com/helseprofil/", pkg)
     gert::git_clone(khRepo, path = khPath, branch = "user")
