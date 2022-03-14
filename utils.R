@@ -14,6 +14,7 @@ kh_install <- function(...){
 }
 
 kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
+  pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
@@ -52,6 +53,7 @@ kh_repo <- function(pkg = c("orgdata",
                             "KHompare",
                             "bat2bat",
                             "khfunctions")){
+  pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
@@ -61,10 +63,14 @@ kh_repo <- function(pkg = c("orgdata",
   khRoot <- file.path(fs::path_home(), "helseprofil")
   if (!fs::dir_exists(khRoot)) fs::dir_create(khRoot)
 
+  branch <- switch(pkg,
+                   khfunctions = "main",
+                   "user")
+
   khPath <- file.path(khRoot, pkg)
   if (!fs::dir_exists(khPath)){
     khRepo <- paste0("https://github.com/helseprofil/", pkg)
-    gert::git_clone(khRepo, path = khPath, branch = "user")
+    gert::git_clone(khRepo, path = khPath, branch = branch)
     setwd(khPath)
     renv::activate()
     renv::restore()
@@ -76,6 +82,7 @@ kh_repo <- function(pkg = c("orgdata",
 
   invisible()
 }
+
 
 kh_arg <- function(...){
   pkg <- tryCatch({
@@ -94,4 +101,12 @@ pkg_install <- function(pkgs){
   new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
   if(length(new.pkgs)) install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
   invisible()
+}
+
+pkg_name <- function(x){
+  x <- tolower(x)
+  if (x == "khompare"){
+    x <- "KHompare"
+  }
+  return(x)
 }
