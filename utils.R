@@ -105,8 +105,10 @@ pkg_install <- function(pkgs){
 
 pkg_name <- function(x){
   x <- tolower(x)
-  if (x == "khompare"){
-    x <- "KHompare"
+  y <- "khompare"
+  if (any(x == y)){
+    ind <- grep(y, x)
+    x[ind] <- "KHompare"
   }
   return(x)
 }
