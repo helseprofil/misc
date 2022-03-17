@@ -9,7 +9,9 @@ kh_install <- function(...){
   pkg <- kh_arg(...)
   kh_package(pkg)
   msg <- paste0("You can now use `library(", pkg,")`")
-  message(msg)
+  orgdata:::is_color_txt(x = "",
+                         msg = msg,
+                         type = "note", emoji = TRUE)
   invisible()
 }
 
