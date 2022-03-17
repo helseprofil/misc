@@ -55,7 +55,7 @@ kh_repo <- function(pkg = c("orgdata",
                             "khfunctions")){
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
-  if (length(pkg) > 1) stop("Can't install more than one package at a time!")
+  if (length(pkg) > 1) stop("Can't restore more than one package at a time!")
 
   pkgs <- c("gert", "fs", "renv")
   pkg_install(pkgs)
