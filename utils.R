@@ -27,7 +27,7 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 
   message("Start installing package ", pkg)
   pkgRepo <- paste0("helseprofil/", pkg)
-  remotes::install_github(pkgRepo)
+  remotes::install_github(pkgRepo, upgrade = "always")
   invisible()
 }
 
