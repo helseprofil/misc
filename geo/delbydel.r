@@ -36,6 +36,13 @@ add_codes <- function(file, code = "0301", save = FALSE){
 
   DT <- data.table::rbindlist(rawTbl)
 
+  DT <- DT[Grunnkrets != ""]
+  dupID <- DT[duplicated(Grunnkrets)][[1]]
+
+  if (length(dupID) > 0){
+    warning("Duplicated ID: ", dupID)
+  }
+
   if (save){
     savePath <- file.path(fs::path_home(), "geo-codes")
     if (isFALSE(fs::dir_exists(savePath))) {
