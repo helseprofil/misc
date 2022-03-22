@@ -16,7 +16,11 @@ add_codes <- function(file, code = "0301", save = FALSE){
   for (i in seq_len(length(rawTbl))){
     dt <- stringr::str_split_fixed(rawTbl[[i]][-1], " {2,}", 5)
     dt <- data.table::as.data.table(dt)
-    cols <- names(dt)[-c(3,4)]
+
+    # Ny grunnkrets have no missing but when split with " {2,}"
+    # move the codes to the missing of old grunnkrets
+    dt[V5 == "", V5 := V4]
+    cols <- names(dt)[-c(3,5)]
     dt[, (cols) := NULL]
 
     data.table::setnames(dt, new = c("Delbydel", "Grunnkrets"))
