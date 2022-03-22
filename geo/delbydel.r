@@ -1,8 +1,8 @@
 ## Les delbydel fil fra Oslo
 
-add_codes <- function(file, code = "0301"){
+add_codes <- function(file, code = "0301", save = FALSE){
 
-  pkgs <- c("pdftools", "data.table", "stringr")
+  pkgs <- c("pdftools", "data.table", "stringr", "fs")
   pkg_install(pkgs)
 
   `:=` <- data.table::`:=`
@@ -30,7 +30,19 @@ add_codes <- function(file, code = "0301"){
     rawTbl[[i]] <- data.table::copy(dt)
   }
 
-  data.table::rbindlist(rawTbl)
+  DT <- data.table::rbindlist(rawTbl)
+
+  if (save){
+    savePath <- file.path(fs::path_home(), "geo-codes")
+    if (isFALSE(fs::dir_exists(savePath))) {
+      fs::dir_create(savePath)
+    }
+
+    fileName <- paste0("Code", code, ".csv")
+    data.table::fwrite(DT, file = file.path(savePath, fileName), sep = ",")
+  }
+
+  return(DT)
 }
 
 pkg_install <- function(pkgs){
