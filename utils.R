@@ -22,7 +22,7 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 
   pkg_install("remotes")
 
-  if (any(installed.packages() == pkg)){
+  if (isTRUE( any(installed.packages() == pkg ))){
     unloadNamespace(pkg)
     remove.packages(pkg)
   }
