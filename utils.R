@@ -9,9 +9,17 @@ kh_install <- function(...){
   pkg <- kh_arg(...)
   pkg <- kh_package(pkg)
   msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
-  orgdata:::is_color_txt(x = "",
-                         msg = msg,
-                         type = "note", emoji = TRUE)
+
+  yeo <- any(installed.packages()[, "Package"] == "orgdata")
+
+  if (yeo){
+    orgdata:::is_color_txt(x = "",
+                           msg = msg,
+                           type = "note", emoji = TRUE)
+  } else {
+    message(msg)
+  }
+
   invisible()
 }
 
@@ -51,6 +59,7 @@ kh_restore <- function(...){
 
   message(msg)
 
+  # Activate project in RStudio
   proj <- paste0(pkg, ".Rproj")
   if(fs::file_exists(proj)){
     rstudioapi::openProject(proj, newSession = TRUE)
@@ -88,7 +97,6 @@ kh_repo <- function(pkg = c("orgdata",
   gert::git_pull()
   renv::activate()
   renv::restore()
-
   invisible(pkg)
 }
 
