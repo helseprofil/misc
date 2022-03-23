@@ -29,7 +29,9 @@ add_codes <- function(file, code = "0301", save = FALSE){
       data.table::set(dt, j = j, value = stringr::str_extract(trimws(dt[[j]]), "^\\d+"))
     }
 
+    # Add prefix code for Oslo
     dt[!is.na(Grunnkrets), Grunnkrets := paste0("0301", Grunnkrets) ]
+    dt[!is.na(Delbydel), Delbydel := paste0("0301", Delbydel) ]
 
     rawTbl[[i]] <- data.table::copy(dt)
   }
