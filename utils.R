@@ -7,8 +7,8 @@
 ## Install specialized packages for KHelse ------------------------------
 kh_install <- function(...){
   pkg <- kh_arg(...)
-  kh_package(pkg)
-  msg <- paste0("You can now use `library(", pkg,")`")
+  pkg <- kh_package(pkg)
+  msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
   orgdata:::is_color_txt(x = "",
                          msg = msg,
                          type = "note", emoji = TRUE)
@@ -22,15 +22,17 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 
   pkg_install("remotes")
 
-  if (any(installed.packages() == pkg)){
-    unloadNamespace(pkg)
+  if (isTRUE( any(installed.packages()[, "Package"] == pkg ))){
+    if (isTRUE(isNamespaceLoaded(pkg))){
+      unloadNamespace(pkg)
+    }
     remove.packages(pkg)
   }
 
   message("Start installing package ", pkg)
   pkgRepo <- paste0("helseprofil/", pkg)
   remotes::install_github(pkgRepo, upgrade = "always")
-  invisible()
+  invisible(pkg)
 }
 
 
@@ -38,13 +40,13 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 ## dependencies
 kh_restore <- function(...){
   pkg <- kh_arg(...)
-  kh_repo(pkg)
+  pkg <- kh_repo(pkg)
   khPath <- getwd()
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R")
     msg <- paste0("You can now use file `SePaaFil.R` in ", khPath)
   } else {
-    msg <- paste0("You can now use `library(", pkg,")`")
+    msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
   }
 
   message(msg)
@@ -83,7 +85,7 @@ kh_repo <- function(pkg = c("orgdata",
     renv::restore()
   }
 
-  invisible()
+  invisible(pkg)
 }
 
 
