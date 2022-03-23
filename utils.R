@@ -55,7 +55,15 @@ kh_restore <- function(...){
     msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
   }
 
-  message(msg)
+  if (requireNamespace("orgdata")){
+    orgdata:::is_color_txt(x = "",
+                           msg = msg,
+                           type = "note", emoji = TRUE)
+  } else {
+    message(msg)
+  }
+
+  Sys.sleep(2)
 
   # Activate project in RStudio
   proj <- paste0(pkg, ".Rproj")
