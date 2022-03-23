@@ -50,6 +50,12 @@ kh_restore <- function(...){
   }
 
   message(msg)
+
+  proj <- paste0(pkg, ".Rproj")
+  if(fs::file_exists(proj)){
+    rstudioapi::openProject(proj, newSession = TRUE)
+  }
+
   invisible()
 }
 
