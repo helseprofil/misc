@@ -39,6 +39,7 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 kh_restore <- function(...){
   pkg <- kh_arg(...)
   kh_repo(pkg)
+  khPath <- getwd()
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R")
     msg <- paste0("You can now use file `SePaaFil.R` in ", khPath)
