@@ -76,14 +76,12 @@ kh_repo <- function(pkg = c("orgdata",
   if (!fs::dir_exists(khPath)){
     khRepo <- paste0("https://github.com/helseprofil/", pkg)
     gert::git_clone(khRepo, path = khPath, branch = gitBranch)
-    setwd(khPath)
-    renv::activate()
-    renv::restore()
-  } else {
-    setwd(khPath)
-    gert::git_pull()
-    renv::restore()
   }
+
+  setwd(khPath)
+  gert::git_pull()
+  renv::activate()
+  renv::restore()
 
   invisible(pkg)
 }
