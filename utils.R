@@ -50,7 +50,7 @@ kh_restore <- function(...){
   khPath <- getwd()
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R")
-    msg <- paste0("You can now use file `SePaaFil.R` in ", khPath)
+    msg <- paste0("Restart project in 3 sec. You can use file `SePaaFil.R` in ", khPath)
   } else {
     msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
   }
@@ -63,7 +63,7 @@ kh_restore <- function(...){
     message(msg)
   }
 
-  Sys.sleep(2)
+  Sys.sleep(4)
 
   # Activate project in RStudio
   proj <- paste0(pkg, ".Rproj")
