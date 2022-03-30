@@ -22,7 +22,7 @@ kh_install <- function(...){
     message(msg)
   }
 
-  options(warn = warnOP)
+  options(warn = warnOp)
   invisible()
 }
 
@@ -71,7 +71,7 @@ kh_restore <- function(...){
     message(msg)
   }
 
-  options(warn = warnOP)
+  options(warn = warnOp)
   Sys.sleep(4)
 
   # Activate project in RStudio
