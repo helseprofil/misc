@@ -6,6 +6,10 @@
 
 ## Install specialized packages for KHelse ------------------------------
 kh_install <- function(...){
+
+  warnOp <- getOption("warn")
+  options(warn = -1)
+
   pkg <- kh_arg(...)
   pkg <- kh_package(pkg)
   msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
@@ -18,6 +22,7 @@ kh_install <- function(...){
     message(msg)
   }
 
+  options(warn = warnOP)
   invisible()
 }
 
@@ -45,6 +50,9 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 ## Restore user branch for reproducibility ie. keep the same package version for
 ## dependencies
 kh_restore <- function(...){
+  warnOp <- getOption("warn")
+  options(warn = -1)
+
   pkg <- kh_arg(...)
   pkg <- kh_repo(pkg)
   khPath <- getwd()
@@ -63,6 +71,7 @@ kh_restore <- function(...){
     message(msg)
   }
 
+  options(warn = warnOP)
   Sys.sleep(4)
 
   # Activate project in RStudio
