@@ -53,7 +53,7 @@ add_codes <- function(file, code = 0301, save = FALSE){
 
     fileName <- paste0("Code", code, ".csv")
     filePath <- file.path(savePath, fileName)
-    data.table::fwrite(DT, file = filePath, sep = ",")
+    data.table::fwrite(DT, file = filePath, sep = ";")
     message("File is saved: ", filePath)
   }
 
