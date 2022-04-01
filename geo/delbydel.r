@@ -1,6 +1,6 @@
 ## Les delbydel fil fra Oslo
 
-add_codes <- function(file, code = "0301", save = FALSE){
+add_codes <- function(file, code = 0301, save = FALSE){
 
   pkgs <- c("pdftools", "data.table", "stringr", "fs")
   pkg_install(pkgs)
@@ -8,7 +8,7 @@ add_codes <- function(file, code = "0301", save = FALSE){
   `:=` <- data.table::`:=`
 
   numerr <- is(code, "numeric")
-  if (numerr) stop("code must be a character, use double quote!")
+  if (numerr) code <- as.character(code)
 
   rawFile <- pdftools::pdf_text(file)
   rawTbl <- stringr::str_split(rawFile, "\n")
@@ -30,8 +30,8 @@ add_codes <- function(file, code = "0301", save = FALSE){
     }
 
     # Add prefix code for Oslo
-    dt[!is.na(Grunnkrets), Grunnkrets := paste0("0301", Grunnkrets) ]
-    dt[!is.na(Delbydel), Delbydel := paste0("0301", Delbydel) ]
+    dt[!is.na(Grunnkrets), Grunnkrets := paste0(code, Grunnkrets) ]
+    dt[!is.na(Delbydel), Delbydel := paste0(code, Delbydel) ]
 
     rawTbl[[i]] <- data.table::copy(dt)
   }
