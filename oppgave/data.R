@@ -33,14 +33,15 @@ df
 str(df)
 df[GEO == 4202]
 df[, KJONN2 := as.character(KJONN)]
-df[GEO == 4202 & AAR == 2020 & KJONN == 1, KJONN2 := "man"]
+df[GEO == 4202 & AAR == 2020 & KJONN == 1, KJONN2 := "mann"]
 df[GEO == 4202 & AAR == 2020 & KJONN == 2, KJONN2 := "kvinne"]
 df[, KJONN := KJONN2]
 df[, c("KJONN2", "LEVEL") := NULL]
 df[, .N, by = KJONN]
 
 saveRDS(df, "kommdata.rds")
-
+kode <- data.table(KJONN = 1:2, CODE = c("mann", "kvinne"))
+kode
 df
 df2020 <- df[AAR == 2020]
 df2021 <- df[AAR == 2021]
@@ -60,6 +61,7 @@ library(RSQLite)
 conn <- dbConnect(RSQLite::SQLite(), "oppgave.db")
 dbWriteTable(conn, "data2020", df2020)
 dbWriteTable(conn, "data2021", df2021)
+dbWriteTable(conn, "tblCode", kode)
 dbListTables(conn)
 
 
