@@ -14,7 +14,7 @@ kh_install <- function(...){
   pkg <- kh_package(pkg)
   msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
 
-  if (requireNamespace("orgdata")){
+  if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
                            type = "note", emoji = TRUE)
