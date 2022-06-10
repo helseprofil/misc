@@ -33,7 +33,7 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
 
   pkg_install("remotes")
 
-  if (requireNamespace(pkg)){
+  if (requireNamespace(pkg, quietly = TRUE)){
     if (isTRUE(isNamespaceLoaded(pkg))){
       unloadNamespace(pkg)
     }
@@ -63,7 +63,7 @@ kh_restore <- function(...){
     msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
   }
 
-  if (requireNamespace("orgdata")){
+  if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
                            type = "note", emoji = TRUE)
