@@ -144,3 +144,20 @@ pkg_name <- function(x){
   }
   return(x)
 }
+
+
+kh_source <- function(repo, branch, file, encoding = NULL){
+
+  gitBase <- "https://raw.githubusercontent.com/helseprofil"
+  gitURL <- paste(gitBase, repo, branch, file, sep = "/")
+  message("Source file ", gitURL)
+  message("From branch ", branch)
+
+  if (is.null(encoding)){
+    source(gitURL)
+  } else {
+    source(gitURL, encoding = encoding)
+  }
+
+  invisible()
+}
