@@ -26,7 +26,8 @@ kh_install <- function(...){
   invisible()
 }
 
-kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare", "bat2bat")){
+kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare")){
+  # package bat2bat not mantained and excluded
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
