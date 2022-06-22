@@ -87,7 +87,7 @@ kh_restore <- function(...){
 kh_repo <- function(pkg = c("orgdata",
                             "norgeo",
                             "KHompare",
-                            "bat2bat",
+                            ## "bat2bat",
                             "khfunctions")){
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
