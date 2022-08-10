@@ -58,7 +58,7 @@ kh_restore <- function(...){
   pkg <- kh_repo(pkg)
   khPath <- getwd()
   if (pkg == "khfunctions"){
-    source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R")
+    source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
     msg <- paste0("RStudio will reload in 3 sec. You can use file `SePaaFil.R` in ", khPath)
   } else {
     msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
