@@ -131,10 +131,15 @@ kh_arg <- function(...){
 }
 
 ## load packages and install if not allready found
-pkg_load <- function(...){
+pkg_load <- function(..., silent = FALSE){
   pkgs <- kh_arg(...)
   pkg_install(pkgs)
-  sapply(pkgs, require, character.only = TRUE)
+
+  if (silent){
+    invisible(sapply(pkgs, require, character.only = TRUE))
+  } else {
+    sapply(pkgs, require, character.only = TRUE)
+  }
 }
 
 
