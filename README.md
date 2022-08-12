@@ -16,9 +16,9 @@ source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 
 # Bonus 
 
-Hvis man vil *load* pakke(r) så kan man bruke `pkg_load()`. Denne funksjonen
-skal også installere pakke hvis ikke allerede finnes i `.libPaths()` før
-*loading*. F.eks
+Hvis man vil *load* pakker så kan man bruke `pkg_load()`. Denne funksjonen
+skal også installere pakker hvis ikke allerede finnes i `.libPaths()` før
+*loading*. Denne funksjonen gjelder bare pakker som kan installeres fra CRAN. 
 
 ``` R
 pkg_load(dplyr, ggplot2, norgeo)
