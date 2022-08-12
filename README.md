@@ -13,3 +13,14 @@ For å tilgjengeligjøre og kunne bruke disse funksjonene, først må denne kode
 ``` R
 source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 ```
+
+# Bonus 
+
+Hvis man vil *load* pakke(r) så kan man bruke `pkg_load()`. Denne funksjonen
+skal også installere pakke hvis ikke allerede finnes i `.libPaths()` før
+*loading*. F.eks
+
+``` R
+pkg_load(dplyr, ggplot2, norgeo)
+```
+

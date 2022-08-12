@@ -2,7 +2,7 @@
 ## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 ## kh_install(orgdata)
 ## kh_restore(khfunctions)
-## pkg_load() # load multiple packages
+## pkg_load() # load multiple packages from CRAN. Install if not found
 
 ## Install specialized packages for KHelse ------------------------------
 kh_install <- function(...){
