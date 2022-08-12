@@ -2,7 +2,7 @@
 ## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 ## kh_install(orgdata)
 ## kh_restore(khfunctions)
-
+## pkg_load() # load multiple packages
 
 ## Install specialized packages for KHelse ------------------------------
 kh_install <- function(...){
@@ -129,6 +129,14 @@ kh_arg <- function(...){
   }
   return(pkg)
 }
+
+## load packages and install if not allready found
+pkg_load <- function(...){
+  pkgs <- kh_arg(...)
+  pkg_install(pkgs)
+  sapply(pkgs, require, character.only = TRUE)
+}
+
 
 pkg_install <- function(pkgs){
   new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
