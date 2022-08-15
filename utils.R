@@ -2,9 +2,10 @@
 ## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 ## kh_install(orgdata)
 ## kh_restore(khfunctions)
-## kh_load() # load multiple packages from CRAN. Install if not found
+## kh_load(orgdata, ggplot2) # load eller installere flere pakker også from CRAN
 
-## load packages and install if not allready found
+
+## load packages and install if not allready found ----------------------
 kh_load <- function(..., silent = FALSE){
   pkgs <- kh_arg(...)
   pkgs <- pkg_name(pkgs)
