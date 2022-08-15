@@ -42,30 +42,8 @@ kh_install <- function(...){
   invisible()
 }
 
-kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare")){
-  # package bat2bat not mantained and excluded
-  pkg <- pkg_name(pkg)
-  pkg <- match.arg(pkg)
-  if (length(pkg) > 1) stop("Can't install more than one package at a time!")
-
-  pkg_install("remotes")
-
-  if (requireNamespace(pkg, quietly = TRUE)){
-    if (isTRUE(isNamespaceLoaded(pkg))){
-      unloadNamespace(pkg)
-    }
-    remove.packages(pkg)
-  }
-
-  message("Start installing package ", pkg)
-  pkgRepo <- paste0("helseprofil/", pkg)
-  remotes::install_github(pkgRepo, upgrade = "always")
-  invisible(pkg)
-}
-
-
 ## Restore user branch for reproducibility ie. keep the same package version for
-## dependencies
+## dependencies ---------------------------------------------------------
 kh_restore <- function(...){
   warnOp <- getOption("warn")
   options(warn = -1)
@@ -99,6 +77,30 @@ kh_restore <- function(...){
 
   invisible()
 }
+
+
+## Helper functions -------------------------------------------------
+kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare")){
+  # package bat2bat not mantained and excluded
+  pkg <- pkg_name(pkg)
+  pkg <- match.arg(pkg)
+  if (length(pkg) > 1) stop("Can't install more than one package at a time!")
+
+  pkg_install("remotes")
+
+  if (requireNamespace(pkg, quietly = TRUE)){
+    if (isTRUE(isNamespaceLoaded(pkg))){
+      unloadNamespace(pkg)
+    }
+    remove.packages(pkg)
+  }
+
+  message("Start installing package ", pkg)
+  pkgRepo <- paste0("helseprofil/", pkg)
+  remotes::install_github(pkgRepo, upgrade = "always")
+  invisible(pkg)
+}
+
 
 kh_repo <- function(pkg = c("orgdata",
                             "norgeo",
