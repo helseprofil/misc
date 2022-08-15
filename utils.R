@@ -161,7 +161,9 @@ pkg_kh <- function(pkg){
 
 pkg_install <- function(pkgs){
   new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-  if(length(new.pkgs)) install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
+  if(length(new.pkgs))
+    install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
+
   return(new.pkgs)
 }
 
