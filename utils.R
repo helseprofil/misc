@@ -2,7 +2,22 @@
 ## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 ## kh_install(orgdata)
 ## kh_restore(khfunctions)
-## pkg_load() # load multiple packages from CRAN. Install if not found
+## kh_load() # load multiple packages from CRAN. Install if not found
+
+## load packages and install if not allready found
+kh_load <- function(..., silent = FALSE){
+  pkgs <- kh_arg(...)
+  pkgs <- pkg_name(pkgs)
+  pk <- pkg_install(pkgs)
+  pkg_kh(pk)
+
+  if (silent){
+    invisible(sapply(pkgs, require, character.only = TRUE))
+  } else {
+    sapply(pkgs, require, character.only = TRUE)
+  }
+}
+
 
 ## Install specialized packages for KHelse ------------------------------
 kh_install <- function(...){
@@ -130,23 +145,21 @@ kh_arg <- function(...){
   return(pkg)
 }
 
-## load packages and install if not allready found
-pkg_load <- function(..., silent = FALSE){
-  pkgs <- kh_arg(...)
-  pkg_install(pkgs)
+pkg_kh <- function(pkg){
 
-  if (silent){
-    invisible(sapply(pkgs, require, character.only = TRUE))
-  } else {
-    sapply(pkgs, require, character.only = TRUE)
-  }
+  khpkg <- c("orgdata", "norgeo", "KHompare")
+  kh <- intersect(pkg, khpkg)
+
+  if (length(kh) > 0)
+    sapply(kh, kh_install)
+
+  invisible()
 }
-
 
 pkg_install <- function(pkgs){
   new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
   if(length(new.pkgs)) install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
-  invisible()
+  return(new.pkgs)
 }
 
 pkg_name <- function(x){
