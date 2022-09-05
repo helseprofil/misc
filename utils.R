@@ -31,11 +31,12 @@ kh_install <- function(..., path = NULL){
   pkf <- grepl("khfun", pkg, ignore.case = TRUE)
   if (pkf){
     kh_restore(pkg, path = path)
+    msg <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
   } else {
     pkg <- kh_package(pkg)
+    msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
   }
 
-  msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
 
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
