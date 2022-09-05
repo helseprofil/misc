@@ -58,12 +58,9 @@ kh_restore <- function(..., path = NULL){
   pkg <- kh_arg(...)
   pkg <- kh_repo(pkg, path)
 
-  if (is.null(rstudioapi::executeCommand('closeProject'))){
-    khPath <- getwd()
-  } else {
-    message("You need to close current project first")
-    rstudioapi::executeCommand('closeProject')
-  }
+  message("You need to close project first if you are currently in a project folder")
+  message("Then run comman again after the project is close")
+  rstudioapi::executeCommand('closeProject')
 
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
