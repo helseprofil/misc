@@ -60,7 +60,6 @@ kh_restore <- function(..., path = NULL){
 
   message("You need to close project first if you are currently in a project folder")
   message("Then run comman again after the project is close")
-  rstudioapi::executeCommand('closeProject')
 
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
