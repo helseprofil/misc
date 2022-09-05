@@ -37,7 +37,6 @@ kh_install <- function(..., path = NULL){
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
   }
 
-
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
@@ -165,7 +164,7 @@ kh_arg <- function(...){
 
 pkg_kh <- function(pkg){
 
-  khpkg <- c("orgdata", "norgeo", "KHompare", "khfunctions")
+  khpkg <- c("orgdata", "norgeo", "KHompare")
   kh <- intersect(pkg, khpkg)
 
   if (length(kh) > 0)
