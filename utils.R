@@ -75,6 +75,7 @@ kh_restore <- function(...){
     rstudioapi::openProject(proj, newSession = TRUE)
   }
 
+  print("Testing 1..2..3..")
   invisible()
 }
 
