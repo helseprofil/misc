@@ -57,7 +57,14 @@ kh_restore <- function(..., path = NULL){
 
   pkg <- kh_arg(...)
   pkg <- kh_repo(pkg, path)
-  khPath <- getwd()
+
+  if (is.null(rstudioapi::executeCommand('closeProject'))){
+    khPath <- getwd()
+  } else {
+    message("You need to close current project first")
+    rstudioapi::executeCommand('closeProject')
+  }
+
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
     msg <- paste0("RStudio will reload in 3 sec. You can use file `SePaaFil.R` in ", khPath)
