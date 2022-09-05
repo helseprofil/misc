@@ -58,8 +58,11 @@ kh_restore <- function(..., path = NULL){
   pkg <- kh_arg(...)
   pkg <- kh_repo(pkg, path)
 
-  message("You need to close project first if you are currently in a project folder")
-  message("Then run comman again after the project is close")
+  khPath <- getwd()
+  khRoot <- kh_root(pkg, create = FALSE)
+  if (identical(khPath, khRoot)){
+    stop("You need to close the project first!")
+  }
 
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
@@ -141,12 +144,15 @@ kh_repo <- function(pkg = c("orgdata",
   invisible(pkg)
 }
 
-kh_root <- function(pkg, path = NULL){
+kh_root <- function(pkg, path = NULL, create = TRUE){
   if (is.null(path)) {
     path <- file.path(fs::path_home(), "helseprofil")
   }
 
-  if (!fs::dir_exists(path)) fs::dir_create(path)
+  if (create){
+    if (!fs::dir_exists(path)) fs::dir_create(path)
+  }
+
   x  <- file.path(path, pkg)
   return(x)
 }
