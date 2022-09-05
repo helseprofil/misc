@@ -40,7 +40,9 @@ kh_install <- function(..., path = NULL){
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
-                           type = "note", emoji = TRUE)
+                           type = "note",
+                           emoji = TRUE,
+                           symbol = "thumb")
   } else {
     message(msg)
   }
@@ -70,7 +72,9 @@ kh_restore <- function(..., path = NULL){
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
-                           type = "note", emoji = TRUE)
+                           type = "note",
+                           emoji = TRUE,
+                           symbol = "thumb")
   } else {
     message(msg)
   }
