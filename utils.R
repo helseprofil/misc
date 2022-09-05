@@ -21,13 +21,20 @@ kh_load <- function(..., silent = FALSE){
 
 
 ## Install specialized packages for KHelse ------------------------------
-kh_install <- function(...){
+kh_install <- function(..., path = NULL){
 
   warnOp <- getOption("warn")
   options(warn = -1)
 
   pkg <- kh_arg(...)
-  pkg <- kh_package(pkg)
+
+  pkf <- grepl("khfun", pkg, ignore.case = TRUE)
+  if (pkf){
+    kh_restore(pkg, path = path)
+  } else {
+    pkg <- kh_package(pkg)
+  }
+
   msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
 
   if (requireNamespace("orgdata", quietly = TRUE)){
@@ -44,12 +51,12 @@ kh_install <- function(...){
 
 ## Restore user branch for reproducibility ie. keep the same package version for
 ## dependencies ---------------------------------------------------------
-kh_restore <- function(...){
+kh_restore <- function(..., path = NULL){
   warnOp <- getOption("warn")
   options(warn = -1)
 
   pkg <- kh_arg(...)
-  pkg <- kh_repo(pkg)
+  pkg <- kh_repo(pkg, path)
   khPath <- getwd()
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
@@ -106,7 +113,7 @@ kh_repo <- function(pkg = c("orgdata",
                             "norgeo",
                             "KHompare",
                             ## "bat2bat",
-                            "khfunctions")){
+                            "khfunctions"), ...){
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't restore more than one package at a time!")
@@ -114,14 +121,11 @@ kh_repo <- function(pkg = c("orgdata",
   pkgs <- c("gert", "fs", "renv")
   pkg_install(pkgs)
 
-  khRoot <- file.path(fs::path_home(), "helseprofil")
-  if (!fs::dir_exists(khRoot)) fs::dir_create(khRoot)
-
   gitBranch <- switch(pkg,
                       khfunctions = "master",
                       "user")
 
-  khPath <- file.path(khRoot, pkg)
+  khPath <- kh_root(pkg, ...)
   if (!fs::dir_exists(khPath)){
     khRepo <- paste0("https://github.com/helseprofil/", pkg)
     gert::git_clone(khRepo, path = khPath, branch = gitBranch)
@@ -132,6 +136,16 @@ kh_repo <- function(pkg = c("orgdata",
   renv::activate()
   renv::restore()
   invisible(pkg)
+}
+
+kh_root <- function(pkg, path = NULL){
+  if (is.null(path)) {
+    path <- file.path(fs::path_home(), "helseprofil")
+  }
+
+  if (!fs::dir_exists(path)) fs::dir_create(path)
+  x  <- file.path(path, pkg)
+  return(x)
 }
 
 
@@ -150,7 +164,7 @@ kh_arg <- function(...){
 
 pkg_kh <- function(pkg){
 
-  khpkg <- c("orgdata", "norgeo", "KHompare")
+  khpkg <- c("orgdata", "norgeo", "KHompare", "khfunctions")
   kh <- intersect(pkg, khpkg)
 
   if (length(kh) > 0)
@@ -170,10 +184,12 @@ pkg_install <- function(pkgs){
 pkg_name <- function(x){
   x <- tolower(x)
   y <- "khompare"
+
   if (any(x == y)){
     ind <- grep(y, x)
     x[ind] <- "KHompare"
   }
+
   return(x)
 }
 
