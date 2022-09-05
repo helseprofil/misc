@@ -73,8 +73,7 @@ kh_restore <- function(..., path = NULL){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
                            type = "note",
-                           emoji = TRUE,
-                           symbol = "thumb")
+                           emoji = TRUE)
   } else {
     message(msg)
   }
