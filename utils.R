@@ -37,6 +37,12 @@ kh_install <- function(..., path = NULL){
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
   }
 
+  tryCatch(requireNamespace("orgdata"),
+           error = function(err){
+             print(err)
+             stop("Fail to install `orgdata`")
+           })
+
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
@@ -50,6 +56,8 @@ kh_install <- function(..., path = NULL){
   options(warn = warnOp)
   invisible()
 }
+
+
 
 ## Restore user branch for reproducibility ie. keep the same package version for
 ## dependencies ---------------------------------------------------------
