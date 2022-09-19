@@ -37,13 +37,9 @@ kh_install <- function(..., path = NULL){
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
   }
 
-  done <- 1
   if (pkg == "orgdata"){
-    done <- requireNamespace("orgdata")
-  }
-
-  if (!done){
-    stop("Fail to install ", pkg, "!")
+    if (!requireNamespace("orgdata"))
+      stop("Fail to install ", pkg, "!")
   }
 
   show_msg(msg)
