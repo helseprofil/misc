@@ -37,28 +37,21 @@ kh_install <- function(..., path = NULL){
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
   }
 
-  success <- 1
+  done <- 1
   if (pkg == "orgdata"){
-    success <- requireNamespace("orgdata")
+    done <- requireNamespace("orgdata")
   }
 
-  if (!success){
-    msg <- paste0("Fail to install ", pkg)
+  if (!done){
+    stop("Fail to install ", pkg, "!")
   }
 
-  show_msg(msg, success)
+  show_msg(msg)
   options(warn = warnOp)
   invisible()
 }
 
-show_msg <- function(msg, success, symbol = "thumb", type = "note"){
-
-  if (!success){
-    symbol = "sad",
-    type = "warn"
-  }
-
-
+show_msg <- function(msg, symbol = "thumb", type = "note"){
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
