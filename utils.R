@@ -27,15 +27,11 @@ kh_install <- function(..., path = NULL){
   options(warn = -1)
 
   pkg <- kh_arg(...)
+  sourceGit <- any(grepl("^khfun|^khvalitet", pkg, ignore.case = TRUE))
 
-  pkf <- grepl("khfun", pkg, ignore.case = TRUE)
-  pkk <- grepl("khvalitet", pkg, ignore.case = TRUE)
-  if (pkf){
-    kh_restore(pkg, path = path)
-    msg <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
-  } else if (pkk){
-    kh_restore(pkg, path = path)
-    msg <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
+  if (sourceGit){
+    pkg <- git_source(pkg, path)
+    pkg <- kh_package(pkg)
   } else {
     pkg <- kh_package(pkg)
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
@@ -65,6 +61,20 @@ show_msg <- function(msg, symbol = "thumb", type = "note"){
   invisible()
 }
 
+
+git_source <- function(pkg, path){
+  pkk <- grepl("^khfunc", pkg, ignore.case = TRUE)
+  if (pkk){
+    pk <- kh_restore(pkg, path = path)
+    ms <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
+  } else {
+    pk <- kh_restore(pkg, path = path)
+    ms <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
+  }
+
+  assign(msg, ms, envir = parant.frame())
+  return(pk)
+}
 
 ## Restore user branch for reproducibility ie. keep the same package version for
 ## dependencies ---------------------------------------------------------
