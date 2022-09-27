@@ -81,7 +81,6 @@ kh_restore <- function(..., path = NULL){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
     msg <- paste0("RStudio will reload in 3 sec. You can use file `SePaaFil.R` in ", khPath)
   } else if (pkg == "KHvalitetskontroll"){
-    source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
     msg <- paste0("RStudio will reload in 3 sec. You can use file `Kvalitetskontroll.Rmd` in ", khPath)
   } else {
     msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
