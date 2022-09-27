@@ -29,9 +29,13 @@ kh_install <- function(..., path = NULL){
   pkg <- kh_arg(...)
 
   pkf <- grepl("khfun", pkg, ignore.case = TRUE)
+  pkk <- grepl("khvalitet", pkg, ignore.case = TRUE)
   if (pkf){
     kh_restore(pkg, path = path)
     msg <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
+  } else if (pkk){
+    kh_restore(pkg, path = path)
+    msg <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
   } else {
     pkg <- kh_package(pkg)
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
@@ -76,6 +80,9 @@ kh_restore <- function(..., path = NULL){
   if (pkg == "khfunctions"){
     source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
     msg <- paste0("RStudio will reload in 3 sec. You can use file `SePaaFil.R` in ", khPath)
+  } else if (pkg == "KHvalitetskontroll"){
+    source("https://raw.githubusercontent.com/helseprofil/khfunctions/master/KHfunctions.R", encoding = "latin1")
+    msg <- paste0("RStudio will reload in 3 sec. You can use file `Kvalitetskontroll.Rmd` in ", khPath)
   } else {
     msg <- paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
   }
@@ -145,7 +152,8 @@ kh_repo <- function(pkg = c("orgdata",
                             "norgeo",
                             "KHompare",
                             ## "bat2bat",
-                            "khfunctions"), ...){
+                            "khfunctions",
+                            "KHvalitetskontroll"), ...){
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't restore more than one package at a time!")
@@ -155,6 +163,7 @@ kh_repo <- function(pkg = c("orgdata",
 
   gitBranch <- switch(pkg,
                       khfunctions = "master",
+                      KHvalitetskontroll = "main",
                       "user")
 
   khPath <- kh_root(pkg, ...)
@@ -222,10 +231,16 @@ pkg_install <- function(pkgs){
 pkg_name <- function(x){
   x <- tolower(x)
   y <- "khompare"
+  z <- "khvalitetskontroll"
 
   if (any(x == y)){
     ind <- grep(y, x)
     x[ind] <- "KHompare"
+  }
+  
+  if (any(x == z)){
+    ind <- grep(z, x)
+    x[ind] <- "KHvalitetskontroll"
   }
 
   return(x)
