@@ -72,7 +72,7 @@ git_source <- function(pkg, path){
     ms <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
   }
 
-  assign(msg, ms, envir = parant.frame())
+  assign("msg", ms, envir = parant.frame())
   return(pk)
 }
 
@@ -237,6 +237,7 @@ pkg_install <- function(pkgs){
   return(new.pkgs)
 }
 
+# Case sensitive package name
 pkg_name <- function(x){
   x <- tolower(x)
   y <- "khompare"
