@@ -72,7 +72,7 @@ git_source <- function(pkg, path){
     ms <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
   }
 
-  assign("msg", ms, envir = parant.frame())
+  assign("msg", ms, envir = parent.frame())
   return(pk)
 }
 
