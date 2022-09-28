@@ -31,7 +31,6 @@ kh_install <- function(..., path = NULL){
 
   if (sourceGit){
     pkg <- git_source(pkg, path)
-    pkg <- kh_package(pkg)
   } else {
     pkg <- kh_package(pkg)
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
@@ -65,15 +64,15 @@ show_msg <- function(msg, symbol = "thumb", type = "note"){
 git_source <- function(pkg, path){
   pkk <- grepl("^khfunc", pkg, ignore.case = TRUE)
   if (pkk){
-    pk <- kh_restore(pkg, path = path)
-    ms <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
+    kh_restore(pkg, path = path)
+    mss <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
   } else {
-    pk <- kh_restore(pkg, path = path)
-    ms <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
+    kh_restore(pkg, path = path)
+    mss <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
   }
 
-  assign(msg, ms, envir = parant.frame())
-  return(pk)
+  assign("msg", mss, envir = sys.frames()[[1]])
+  return(pkg)
 }
 
 ## Restore user branch for reproducibility ie. keep the same package version for
@@ -237,6 +236,7 @@ pkg_install <- function(pkgs){
   return(new.pkgs)
 }
 
+# Case sensitive package name
 pkg_name <- function(x){
   x <- tolower(x)
   y <- "khompare"
