@@ -17,6 +17,8 @@ kh_load <- function(..., silent = FALSE){
   } else {
     sapply(pkgs, require, character.only = TRUE)
   }
+
+  invisible()
 }
 
 
@@ -46,34 +48,6 @@ kh_install <- function(..., path = NULL){
   invisible()
 }
 
-show_msg <- function(msg, symbol = "thumb", type = "note"){
-  if (requireNamespace("orgdata", quietly = TRUE)){
-    orgdata:::is_color_txt(x = "",
-                           msg = msg,
-                           type = type,
-                           emoji = TRUE,
-                           symbol = symbol)
-  } else {
-    message(msg)
-  }
-
-  invisible()
-}
-
-
-git_source <- function(pkg, path){
-  pkk <- grepl("^khfunc", pkg, ignore.case = TRUE)
-  if (pkk){
-    kh_restore(pkg, path = path)
-    mss <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
-  } else {
-    kh_restore(pkg, path = path)
-    mss <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
-  }
-
-  assign("msg", mss, envir = sys.frames()[[1]])
-  return(pkg)
-}
 
 ## Restore user branch for reproducibility ie. keep the same package version for
 ## dependencies ---------------------------------------------------------
@@ -83,7 +57,6 @@ kh_restore <- function(..., path = NULL){
 
   pkg <- kh_arg(...)
   pkg <- kh_repo(pkg, path)
-
   khPath <- getwd()
 
   msg <- switch(pkg,
@@ -97,15 +70,7 @@ kh_restore <- function(..., path = NULL){
                 paste0("Successfully installed ", pkg, ". Use `library(", pkg,")`")
                 )
 
-  if (requireNamespace("orgdata", quietly = TRUE)){
-    orgdata:::is_color_txt(x = "",
-                           msg = msg,
-                           type = "note",
-                           emoji = TRUE)
-  } else {
-    message(msg)
-  }
-
+  show_msg(msg)
   options(warn = warnOp)
   Sys.sleep(4)
 
@@ -257,4 +222,31 @@ pkg_name <- function(x){
   return(x)
 }
 
+show_msg <- function(msg, symbol = "thumb", type = "note"){
+  if (requireNamespace("orgdata", quietly = TRUE)){
+    orgdata:::is_color_txt(x = "",
+                           msg = msg,
+                           type = type,
+                           emoji = TRUE,
+                           symbol = symbol)
+  } else {
+    message(msg)
+  }
 
+  invisible()
+}
+
+
+git_source <- function(pkg, path){
+  pkk <- grepl("^khfunc", pkg, ignore.case = TRUE)
+  if (pkk){
+    kh_restore(pkg, path = path)
+    mss <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
+  } else {
+    kh_restore(pkg, path = path)
+    mss <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
+  }
+
+  assign("msg", mss, envir = sys.frames()[[1]])
+  return(pkg)
+}
