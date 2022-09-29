@@ -32,7 +32,7 @@ kh_install <- function(..., path = NULL){
   sourceGit <- any(grepl("^khfun|^khvalitet", pkg, ignore.case = TRUE))
 
   if (sourceGit){
-    pkg <- is_git_restore(pkg, path)
+    pkg <- is_not_package(pkg, path)
   } else {
     pkg <- kh_package(pkg)
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
@@ -237,7 +237,7 @@ show_msg <- function(msg, symbol = "thumb", type = "note"){
 }
 
 # Repos that aren't R package
-is_git_restore <- function(pkg, path){
+is_not_package <- function(pkg, path){
   pkk <- grepl("^khfunc", pkg, ignore.case = TRUE)
   if (pkk){
     kh_restore(pkg, path = path)
