@@ -32,7 +32,7 @@ kh_install <- function(..., path = NULL){
   sourceGit <- any(grepl("^khfun|^khvalitet", pkg, ignore.case = TRUE))
 
   if (sourceGit){
-    pkg <- git_source(pkg, path)
+    pkg <- is_git_source(pkg, path)
   } else {
     pkg <- kh_package(pkg)
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
@@ -203,7 +203,7 @@ pkg_install <- function(pkgs){
   return(new.pkgs)
 }
 
-# Case sensitive package name
+# Ensure case sensitive name
 pkg_name <- function(x){
   x <- tolower(x)
   y <- "khompare"
@@ -236,15 +236,15 @@ show_msg <- function(msg, symbol = "thumb", type = "note"){
   invisible()
 }
 
-
-git_source <- function(pkg, path){
+# Repos that aren't R package
+is_git_source <- function(pkg, path){
   pkk <- grepl("^khfunc", pkg, ignore.case = TRUE)
   if (pkk){
     kh_restore(pkg, path = path)
     mss <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
   } else {
     kh_restore(pkg, path = path)
-    mss <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd for usage")
+    mss <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd` for usage")
   }
 
   assign("msg", mss, envir = sys.frames()[[1]])
