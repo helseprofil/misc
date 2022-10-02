@@ -4,6 +4,9 @@
 ## kh_restore(khfunctions)
 ## kh_load(orgdata, ggplot2) # load eller installere flere pakker også from CRAN
 
+## KHelse R packages and source files
+khpkg <- c("orgdata", "norgeo", "KHompare")
+khsrc <- c("khfunctions", "KHvalitetskontroll")
 
 ## load packages and install if not allready found ----------------------
 kh_load <- function(..., silent = FALSE){
@@ -23,7 +26,7 @@ kh_load <- function(..., silent = FALSE){
 
 
 ## Install specialized packages for KHelse ------------------------------
-kh_install <- function(..., path = NULL){
+kh_install <- function(..., path = NULL, khpkg = khpkg){
 
   warnOp <- getOption("warn")
   options(warn = -1)
@@ -38,8 +41,9 @@ kh_install <- function(..., path = NULL){
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
   }
 
-  if (pkg == "orgdata"){
-    if (!requireNamespace("orgdata"))
+  khp <- intersect(pkg, khpkg)
+  if (length(khp) != 0){
+    if (!requireNamespace(pkg))
       stop("Fail to install ", pkg, "!")
   }
 
@@ -101,7 +105,7 @@ kh_source <- function(repo, branch, file, encoding = NULL){
 }
 
 ## Helper functions -------------------------------------------------
-kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare")){
+kh_package <- function(pkg = khpkg){
   # package bat2bat not mantained and excluded
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
@@ -123,12 +127,7 @@ kh_package <- function(pkg = c("orgdata", "norgeo", "KHompare")){
 }
 
 
-kh_repo <- function(pkg = c("orgdata",
-                            "norgeo",
-                            "KHompare",
-                            ## "bat2bat",
-                            "khfunctions",
-                            "KHvalitetskontroll"), ...){
+kh_repo <- function(pkg = c(khpkg, khsrc), ...){
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't restore more than one package at a time!")
@@ -179,9 +178,8 @@ kh_arg <- function(...){
   return(pkg)
 }
 
-pkg_kh <- function(pkg){
+pkg_kh <- function(pkg, khpkg = khpkg){
 
-  khpkg <- c("orgdata", "norgeo", "KHompare")
   kh <- intersect(pkg, khpkg)
 
   if (length(kh) > 0)
