@@ -26,7 +26,7 @@ kh_load <- function(..., silent = FALSE){
 
 
 ## Install specialized packages for KHelse ------------------------------
-kh_install <- function(..., path = NULL, khpkg = khpkg){
+kh_install <- function(..., path = NULL, packages = khpkg){
 
   warnOp <- getOption("warn")
   options(warn = -1)
@@ -41,7 +41,7 @@ kh_install <- function(..., path = NULL, khpkg = khpkg){
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
   }
 
-  khp <- intersect(pkg, khpkg)
+  khp <- intersect(pkg, packages)
   if (length(khp) != 0){
     if (!requireNamespace(pkg))
       stop("Fail to install ", pkg, "!")
