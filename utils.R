@@ -178,7 +178,7 @@ kh_arg <- function(...){
   return(pkg)
 }
 
-pkg_kh <- function(pkg, khpkg = khpkg){
+pkg_kh <- function(pkg, khpkg = NULL){
 
   kh <- intersect(pkg, khpkg)
 
@@ -188,17 +188,18 @@ pkg_kh <- function(pkg, khpkg = khpkg){
   invisible()
 }
 
-pkg_install <- function(pkgs){
-  notPkg <- any(pkgs == "khfunctions")
+pkg_install <- function(pkinst){
+
+  notPkg <- any(pkinst == "khfunctions")
   if (notPkg){
     stop("KHfunctions is not a package! Use `kh_install(khfunctions)` instead.")
   }
 
-  new.pkgs <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-  if(length(new.pkgs))
-    install.packages(new.pkgs, repos = "https://cloud.r-project.org/")
+  new.pkinst <- pkinst[!(pkinst %in% installed.packages()[,"Package"])]
+  if(length(new.pkinst))
+    install.packages(new.pkinst, repos = "https://cloud.r-project.org/")
 
-  return(new.pkgs)
+  return(new.pkinst)
 }
 
 # Ensure case sensitive name
