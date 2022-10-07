@@ -223,7 +223,8 @@ pkg_name <- function(x, kh.names = c(khpkg, khsrc)){
   khx <- which(x2 %in% kh.names)
 
   for (i in khx){
-    x[i] <- grep(x[i], kh.names, ignore.case = TRUE, value = TRUE)
+    xv <- paste0("^", x[i])
+    x[i] <- grep(xv, kh.names, ignore.case = TRUE, value = TRUE)
   }
 
   return(x)
