@@ -12,8 +12,8 @@ khsrc <- c("khfunctions", "KHvalitetskontroll")
 kh_load <- function(..., silent = FALSE){
   pkgs <- as.character(match.call(expand.dots = FALSE)[[2]])
   pkgs <- pkg_name(pkgs)
-  pk <- pkg_install(pkgs)
-  pkg_kh(pk)
+  pk <- pkg_cran_install(pkgs)
+  pkg_kh_install(pk)
 
   if (silent){
     invisible(sapply(pkgs, require, character.only = TRUE))
@@ -118,7 +118,7 @@ kh_package <- function(pkg = khpkg){
   pkg <- pkg_name(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
-  pkg_install("remotes")
+  pkg_cran_install("remotes")
 
   if (requireNamespace(pkg, quietly = TRUE)){
     if (isTRUE(isNamespaceLoaded(pkg))){
@@ -140,7 +140,7 @@ kh_repo <- function(pkg = c(khpkg, khsrc), ...){
   if (length(pkg) > 1) stop("Can't restore more than one package at a time!")
 
   pkgs <- c("gert", "fs", "renv")
-  pkg_install(pkgs)
+  pkg_cran_install(pkgs)
 
   gitBranch <- switch(pkg,
                       khfunctions = "master",
@@ -172,7 +172,7 @@ kh_root <- function(pkg, path = NULL){
 }
 
 # Install KHelse packages from Github
-pkg_kh <- function(pkg, packages = khpkg){
+pkg_kh_install <- function(pkg, packages = khpkg){
 
   kh <- intersect(pkg, packages)
 
@@ -183,7 +183,7 @@ pkg_kh <- function(pkg, packages = khpkg){
 }
 
 # Install R package from CRAN
-pkg_install <- function(pkg){
+pkg_cran_install <- function(pkg){
 
   pkinst <- stop_not_package(pkg)
 
