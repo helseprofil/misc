@@ -232,7 +232,7 @@ is_not_package_msg <- function(pkg, path, not.pkg = khsrc, sepafil = "SePaaFil.R
 
   if (notPkg){
     kh_restore(char = force(pkg), path = path)
-    mss <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
+    mss <- paste0("Successfully installed ", pkg, ". Check `", sepafil, "` file for usage.")
   }
 
   assign("msg", mss, envir = sys.frames()[[1]])
