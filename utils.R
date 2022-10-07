@@ -183,7 +183,7 @@ pkg_kh_install <- function(pkg, packages = khpkg){
   kh <- kh.pkg[!(kh.pkg %in% installed.packages()[,"Package"])]
 
   if (length(kh))
-    sapply(kh, function(x) kh_install(char = x), USE.NAMES = TRUE)
+    sapply(kh, function(x) kh_install(char = x))
 
   invisible()
 }
