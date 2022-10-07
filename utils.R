@@ -45,7 +45,7 @@ kh_install <- function(..., path = NULL, packages = khpkg, not.packages = khsrc)
   khp <- intersect(pkg, packages)
   if (length(khp) != 0){
     if (!requireNamespace(pkg))
-      stop("Fail to install ", pkg, "!")
+      stop(simpleError("Fail to install ", pkg, "!"))
   }
 
   show_msg(msg)
@@ -116,7 +116,6 @@ kh_source <- function(repo, branch, file, encoding = NULL){
 kh_package <- function(pkg = khpkg){
   # package bat2bat not mantained and excluded
   pkg <- pkg_name(pkg)
-  pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
   pkg_install("remotes")
@@ -172,6 +171,7 @@ kh_root <- function(pkg, path = NULL){
   return(x)
 }
 
+# Install KHelse packages from Github
 pkg_kh <- function(pkg, packages = khpkg){
 
   kh <- intersect(pkg, packages)
@@ -182,9 +182,10 @@ pkg_kh <- function(pkg, packages = khpkg){
   invisible()
 }
 
-pkg_install <- function(pkinst){
+# Install R package from CRAN
+pkg_install <- function(pkg){
 
-  stop_not_package(pkinst)
+  pkinst <- stop_not_package(pkg)
 
   new.pkinst <- pkinst[!(pkinst %in% installed.packages()[,"Package"])]
   if(length(new.pkinst))
@@ -194,18 +195,30 @@ pkg_install <- function(pkinst){
 }
 
 stop_not_package <- function(pkg, not.pkg = khsrc){
+
+  Rpkg <- setdiff(pkg, not.pkg)
   notPkg <- any(pkg %in% not.pkg )
   if (notPkg){
-    stop(pkg, " is not a package! Use `kh_install(", pkg,")` instead")
+    pkgSrc <- intersect(pkg, not.pkg)[1]
+    msg <- paste0(pkgSrc, " is not an R package! Use `kh_install(", pkgSrc,")` instead")
+    stop(simpleError(msg))
   }
 
-  invisible()
+  invisible(Rpkg)
 }
 
 # Ensure correct name as in repos
 pkg_name <- function(x, kh.names = c(khpkg, khsrc)){
-  x <- paste0("^", x)
-  grep(x, kh.names, ignore.case = TRUE, value = TRUE)
+
+  # Exclude other packages that aren't KHelse
+  x2 <- sapply(x, function(x) grep(paste0("^", x), kh.names, ignore.case = T, value = T))
+  khx <- which(x2 %in% kh.names)
+
+  for (i in khx){
+    x[i] <- grep(x[i], kh.names, ignore.case = TRUE, value = TRUE)
+  }
+
+  return(x)
 }
 
 show_msg <- function(msg, symbol = "thumb", type = "note"){
