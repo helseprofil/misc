@@ -178,9 +178,9 @@ kh_arg <- function(...){
   return(pkg)
 }
 
-pkg_kh <- function(pkg, khpkg = NULL){
+pkg_kh <- function(pkg, packages = khpkg){
 
-  kh <- intersect(pkg, khpkg)
+  kh <- intersect(pkg, packages)
 
   if (length(kh) > 0)
     sapply(kh, kh_install)
