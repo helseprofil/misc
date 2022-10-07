@@ -10,7 +10,7 @@ khsrc <- c("khfunctions", "KHvalitetskontroll")
 
 ## load packages and install if not allready found ----------------------
 kh_load <- function(..., silent = FALSE){
-  pkgs <- kh_arg(...)
+  pkgs <- as.character(match.call(expand.dots = FALSE)[[2]])
   pkgs <- pkg_name(pkgs)
   pk <- pkg_install(pkgs)
   pkg_kh(pk)
@@ -31,7 +31,7 @@ kh_install <- function(..., path = NULL, packages = khpkg){
   warnOp <- getOption("warn")
   options(warn = -1)
 
-  pkg <- kh_arg(...)
+  pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
   sourceGit <- any(grepl("^khfun|^khvalitet", pkg, ignore.case = TRUE))
 
   if (sourceGit){
@@ -59,7 +59,7 @@ kh_restore <- function(..., path = NULL){
   warnOp <- getOption("warn")
   options(warn = -1)
 
-  pkg <- kh_arg(...)
+  pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
   pkg <- kh_repo(pkg, path)
   khPath <- getwd()
 
@@ -162,20 +162,6 @@ kh_root <- function(pkg, path = NULL){
 
   x  <- file.path(path, pkg)
   return(x)
-}
-
-
-kh_arg <- function(...){
-  pkg <- tryCatch({
-    unlist(list(...))
-  },
-  error = function(err){err})
-
-  if (is(pkg, "error")){
-    dots <- eval(substitute(alist(...)))
-    pkg <- sapply(as.list(dots), deparse)
-  }
-  return(pkg)
 }
 
 pkg_kh <- function(pkg, packages = khpkg){
