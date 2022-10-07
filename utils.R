@@ -26,16 +26,17 @@ kh_load <- function(..., silent = FALSE){
 
 
 ## Install specialized packages for KHelse ------------------------------
-kh_install <- function(..., path = NULL, packages = khpkg){
+kh_install <- function(..., path = NULL, packages = khpkg, not.packages = khsrc){
 
   warnOp <- getOption("warn")
   options(warn = -1)
 
   pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
-  sourceGit <- any(grepl("^khfun|^khvalitet", pkg, ignore.case = TRUE))
+  pkg <- pkg_name(pkg)
+  sourceGit <- is.element(pkg, not.packages)
 
   if (sourceGit){
-    pkg <- is_not_package(pkg, path)
+    pkg <- is_not_package_msg(pkg, path)
   } else {
     pkg <- kh_package(pkg)
     msg <- paste0("Successfully installed ", pkg, ". Load package with `library(", pkg,")`")
@@ -55,11 +56,18 @@ kh_install <- function(..., path = NULL, packages = khpkg){
 
 ## Restore user branch for reproducibility ie. keep the same package version for
 ## dependencies ---------------------------------------------------------
-kh_restore <- function(..., path = NULL){
+kh_restore <- function(..., char, path = NULL){
+  # char - Ignoring dots when imposing pkg as character
   warnOp <- getOption("warn")
   options(warn = -1)
 
-  pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
+  if (missing(char)){
+    pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
+  } else {
+    pkg <- char
+  }
+
+  pkg <- pkg_name(pkg)
   pkg <- kh_repo(pkg, path)
   khPath <- getwd()
 
@@ -176,10 +184,7 @@ pkg_kh <- function(pkg, packages = khpkg){
 
 pkg_install <- function(pkinst){
 
-  notPkg <- any(pkinst == "khfunctions")
-  if (notPkg){
-    stop("KHfunctions is not a package! Use `kh_install(khfunctions)` instead.")
-  }
+  stop_not_package(pkinst)
 
   new.pkinst <- pkinst[!(pkinst %in% installed.packages()[,"Package"])]
   if(length(new.pkinst))
@@ -188,23 +193,19 @@ pkg_install <- function(pkinst){
   return(new.pkinst)
 }
 
-# Ensure case sensitive name
-pkg_name <- function(x){
-  x <- tolower(x)
-  y <- "khompare"
-  z <- "khvalitetskontroll"
-
-  if (any(x == y)){
-    ind <- grep(y, x)
-    x[ind] <- "KHompare"
-  }
-  
-  if (any(x == z)){
-    ind <- grep(z, x)
-    x[ind] <- "KHvalitetskontroll"
+stop_not_package <- function(pkg, not.pkg = khsrc){
+  notPkg <- any(pkg %in% not.pkg )
+  if (notPkg){
+    stop(pkg, " is not a package! Use `kh_install(", pkg,")` instead")
   }
 
-  return(x)
+  invisible()
+}
+
+# Ensure correct name as in repos
+pkg_name <- function(x, kh.names = c(khpkg, khsrc)){
+  x <- paste0("^", x)
+  grep(x, kh.names, ignore.case = TRUE, value = TRUE)
 }
 
 show_msg <- function(msg, symbol = "thumb", type = "note"){
@@ -222,14 +223,16 @@ show_msg <- function(msg, symbol = "thumb", type = "note"){
 }
 
 # Repos that aren't R package
-is_not_package <- function(pkg, path){
-  pkk <- grepl("^khfunc", pkg, ignore.case = TRUE)
-  if (pkk){
-    kh_restore(pkg, path = path)
+is_not_package_msg <- function(pkg, path, not.pkg = khsrc, sepafil = "SePaaFil.R"){
+
+  notPkg <- any(pkg %in% not.pkg )
+  if (grepl("^khvalitet", pkg, ignore.case = TRUE)){
+    sepafil <- "Kvalitetskontroll.Rmd"
+  }
+
+  if (notPkg){
+    kh_restore(char = force(pkg), path = path)
     mss <- paste0("Successfully installed ", pkg, ". Check `SePaaFil.R` file for usage.")
-  } else {
-    kh_restore(pkg, path = path)
-    mss <- paste0("Successfully installed ", pkg, ". Open `Kvalitetskontroll.Rmd` for usage")
   }
 
   assign("msg", mss, envir = sys.frames()[[1]])
