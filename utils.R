@@ -12,8 +12,8 @@ khsrc <- c("khfunctions", "KHvalitetskontroll")
 kh_load <- function(..., silent = FALSE){
   pkgs <- as.character(match.call(expand.dots = FALSE)[[2]])
   pkgs <- pkg_name(pkgs)
-  pk <- pkg_cran_install(pkgs)
-  pkg_kh_install(pk)
+  pkg_cran_install(pkgs)
+  pkg_kh_install(pkgs)
 
   if (silent){
     invisible(sapply(pkgs, require, character.only = TRUE))
@@ -26,12 +26,17 @@ kh_load <- function(..., silent = FALSE){
 
 
 ## Install specialized packages for KHelse ------------------------------
-kh_install <- function(..., path = NULL, packages = khpkg, not.packages = khsrc){
+kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = khsrc){
 
   warnOp <- getOption("warn")
   options(warn = -1)
 
-  pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
+  if (missing(char)){
+    pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
+  } else {
+    pkg <- char
+  }
+
   pkg <- pkg_name(pkg)
   sourceGit <- is.element(pkg, not.packages)
 
@@ -174,24 +179,27 @@ kh_root <- function(pkg, path = NULL){
 # Install KHelse packages from Github
 pkg_kh_install <- function(pkg, packages = khpkg){
 
-  kh <- intersect(pkg, packages)
+  kh.pkg <- intersect(pkg, packages)
+  kh <- kh.pkg[!(kh.pkg %in% installed.packages()[,"Package"])]
 
-  if (length(kh) > 0)
-    sapply(kh, kh_install)
+  if (length(kh))
+    sapply(kh, function(x) kh_install(char = x), USE.NAMES = TRUE)
 
   invisible()
 }
 
 # Install R package from CRAN
-pkg_cran_install <- function(pkg){
+pkg_cran_install <- function(pkg, kh.packages = c(khpkg, khsrc)){
 
+  # needed when using kh_load
   pkinst <- stop_not_package(pkg)
+  pkinst <- setdiff(pkg, kh.packages)
 
   new.pkinst <- pkinst[!(pkinst %in% installed.packages()[,"Package"])]
   if(length(new.pkinst))
     install.packages(new.pkinst, repos = "https://cloud.r-project.org/")
 
-  return(new.pkinst)
+  invisible()
 }
 
 stop_not_package <- function(pkg, not.pkg = khsrc){
