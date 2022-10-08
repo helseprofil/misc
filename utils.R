@@ -218,16 +218,13 @@ stop_not_package <- function(pkg, not.pkg = khsrc){
 # Ensure correct name as in repos
 pkg_name <- function(x, kh.names = c(khpkg, khsrc)){
 
+  x <- setNames(x, x)
   # Exclude other packages that aren't KHelse
   x2 <- sapply(x, function(x) grep(paste0("^", x), kh.names, ignore.case = T, value = T))
-  khx <- which(x2 %in% kh.names)
+  x2 <- Filter(length, x2)
+  x[names(x2)] <- x2
 
-  for (i in khx){
-    xv <- paste0("^", x[i])
-    x[i] <- grep(xv, kh.names, ignore.case = TRUE, value = TRUE)
-  }
-
-  return(x)
+  return(unlist(x))
 }
 
 show_msg <- function(msg, symbol = "thumb", type = "note"){
