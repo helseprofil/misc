@@ -246,9 +246,9 @@ show_done_msg <- function(x , action = c("install", "restore"),
                    )
 
   if (notPkg){
-    msg <- paste0(msgAct, pkg, ". Check `", sepafil, "` file for usage.")
+    msg <- paste0(msgAct, x, ". Check `", sepafil, "` file for usage.")
   } else {
-    msg <- paste0(msgAct, pkg, ". Load with `library(", pkg,")`")
+    msg <- paste0(msgAct, x, ". Load with `library(", x,")`")
   }
 
   return(msg)
