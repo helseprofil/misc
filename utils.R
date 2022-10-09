@@ -1,6 +1,8 @@
 ## To use, run this code:
 ## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
-## kh_install(orgdata)
+## kh_install(orgdata) #vanlig bruker
+## kh_install(khfunctions)
+## kh_restore(orgdata) #utvikler
 ## kh_restore(khfunctions)
 ## kh_load(orgdata, ggplot2) # load eller installere flere pakker også from CRAN
 
