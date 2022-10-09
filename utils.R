@@ -4,14 +4,17 @@
 ## kh_restore(khfunctions)
 ## kh_load(orgdata, ggplot2) # load eller installere flere pakker også from CRAN
 
-## KHelse R packages and source files
+## KHelse R packages and source files ----------------------------------
 khpkg <- c("orgdata", "norgeo", "KHompare")
 khsrc <- c("khfunctions", "KHvalitetskontroll")
+# package bat2bat is not mantained and excluded
 
 ## load packages and install if not allready found ----------------------
 kh_load <- function(..., silent = FALSE){
+
   pkgs <- as.character(match.call(expand.dots = FALSE)[[2]])
   pkgs <- pkg_name(pkgs)
+  stop_not_package(pkgs)
   pkg_cran_install(pkgs)
   pkg_kh_install(pkgs)
 
@@ -20,8 +23,6 @@ kh_load <- function(..., silent = FALSE){
   } else {
     sapply(pkgs, require, character.only = TRUE)
   }
-
-  invisible()
 }
 
 
@@ -110,7 +111,7 @@ kh_source <- function(repo, branch, file, encoding = NULL){
 
 ## Helper functions -------------------------------------------------
 kh_package <- function(pkg = khpkg){
-  # package bat2bat not mantained and excluded
+
   pkg <- pkg_name(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
@@ -131,6 +132,7 @@ kh_package <- function(pkg = khpkg){
 
 
 kh_repo <- function(pkg = c(khpkg, khsrc), ...){
+
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't restore more than one package at a time!")
@@ -168,9 +170,9 @@ kh_root <- function(pkg, path = NULL){
 }
 
 # Install KHelse packages from Github
-pkg_kh_install <- function(pkg, packages = khpkg){
+pkg_kh_install <- function(x, pkg = khpkg){
 
-  kh.pkg <- intersect(pkg, packages)
+  kh.pkg <- intersect(x, pkg)
   kh <- kh.pkg[!(kh.pkg %in% installed.packages()[,"Package"])]
 
   if (length(kh))
@@ -180,37 +182,33 @@ pkg_kh_install <- function(pkg, packages = khpkg){
 }
 
 # Install R package from CRAN
-pkg_cran_install <- function(pkg, kh.packages = c(khpkg, khsrc)){
+pkg_cran_install <- function(x, kh.packages = c(khpkg, khsrc)){
 
-  # needed when using kh_load
-  pkinst <- stop_not_package(pkg)
-  pkinst <- setdiff(pkg, kh.packages)
-
-  new.pkinst <- pkinst[!(pkinst %in% installed.packages()[,"Package"])]
-  if(length(new.pkinst))
-    install.packages(new.pkinst, repos = "https://cloud.r-project.org/")
+  cran <- setdiff(x, kh.packages)
+  new.cran <- cran[!(cran %in% installed.packages()[,"Package"])]
+  if(length(new.cran))
+    install.packages(new.cran, repos = "https://cloud.r-project.org/")
 
   invisible()
 }
 
-stop_not_package <- function(pkg, not.pkg = khsrc){
+stop_not_package <- function(x, not.pkg = khsrc){
 
-  Rpkg <- setdiff(pkg, not.pkg)
-  notPkg <- any(pkg %in% not.pkg )
+  notPkg <- any(x %in% not.pkg)
   if (notPkg){
-    pkgSrc <- intersect(pkg, not.pkg)[1]
-    msg <- paste0(pkgSrc, " is not an R package! Use `kh_install(", pkgSrc,")` instead")
+    pkgSrc <- intersect(x, not.pkg)[1]
+    msg <- paste0(pkgSrc, " is not R package! Use `kh_install(", pkgSrc,")` instead.")
     stop(simpleError(msg))
   }
 
-  invisible(Rpkg)
+  invisible()
 }
 
 # Ensure correct name as in repos
-pkg_name <- function(x, kh.names = c(khpkg, khsrc)){
+pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
   x <- setNames(x, x)
   # Exclude other packages that aren't KHelse
-  x2 <- sapply(x, function(x) grep(paste0("^", x), kh.names, ignore.case = T, value = T))
+  x2 <- sapply(x, function(x) grep(paste0("^", x), kh.packages, ignore.case = T, value = T))
   x2 <- Filter(length, x2)
   x[names(x2)] <- x2
   x <- unname(unlist(x))
@@ -219,7 +217,7 @@ pkg_name <- function(x, kh.names = c(khpkg, khsrc)){
 
 msg_text <- function(x , action = c("install", "restore"),
                      pkg = khpkg, not.pkg = khsrc,
-                          sepafil = "SePaaFil.R"){
+                     sepafil = "SePaaFil.R"){
 
   notPkg <- any(x %in% not.pkg )
   if (grepl("^khvalitet", x, ignore.case = TRUE)){
@@ -241,6 +239,7 @@ msg_text <- function(x , action = c("install", "restore"),
 }
 
 msg_show <- function(msg, symbol = "thumb", type = "note"){
+
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
