@@ -9,7 +9,7 @@ khpkg <- c("orgdata", "norgeo", "KHompare")
 khsrc <- c("khfunctions", "KHvalitetskontroll")
 # package bat2bat is not mantained and excluded
 
-## load packages and install if not allready found ----------------------
+## Load or install any packages including those from CRAN --------------
 kh_load <- function(..., silent = FALSE){
 
   pkgs <- as.character(match.call(expand.dots = FALSE)[[2]])
@@ -92,7 +92,7 @@ kh_restore <- function(..., char, path = NULL){
   invisible()
 }
 
-## Make sourcing of branch for testing easily
+## Make sourcing of branch for testing easily -------------------
 kh_source <- function(repo, branch, file, encoding = NULL){
 
   gitBase <- "https://raw.githubusercontent.com/helseprofil"
@@ -109,7 +109,20 @@ kh_source <- function(repo, branch, file, encoding = NULL){
   invisible()
 }
 
+
 ## Helper functions -------------------------------------------------
+
+# Ensure correct name as in repos
+pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
+  x <- setNames(x, x)
+  # Exclude other packages that aren't KHelse
+  x2 <- sapply(x, function(x) grep(paste0("^", x), kh.packages, ignore.case = T, value = T))
+  x2 <- Filter(length, x2)
+  x[names(x2)] <- x2
+  x <- unname(unlist(x))
+  return(x)
+}
+
 kh_package <- function(pkg = khpkg){
 
   pkg <- pkg_name(pkg)
@@ -129,7 +142,6 @@ kh_package <- function(pkg = khpkg){
   remotes::install_github(pkgRepo, upgrade = "always")
   invisible(pkg)
 }
-
 
 kh_repo <- function(pkg = c(khpkg, khsrc), ...){
 
@@ -202,17 +214,6 @@ stop_not_package <- function(x, not.pkg = khsrc){
   }
 
   invisible()
-}
-
-# Ensure correct name as in repos
-pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
-  x <- setNames(x, x)
-  # Exclude other packages that aren't KHelse
-  x2 <- sapply(x, function(x) grep(paste0("^", x), kh.packages, ignore.case = T, value = T))
-  x2 <- Filter(length, x2)
-  x[names(x2)] <- x2
-  x <- unname(unlist(x))
-  return(x)
 }
 
 msg_text <- function(x , action = c("install", "restore"),
