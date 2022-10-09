@@ -121,7 +121,7 @@ pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
   x2 <- sapply(x, function(x) grep(paste0("^", x), kh.packages, ignore.case = T, value = T))
   x2 <- Filter(length, x2)
   x[names(x2)] <- x2
-  x <- unname(unlist(x))
+  x <- unlist(x, use.names = FALSE)
   return(x)
 }
 
