@@ -52,8 +52,8 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
       stop(simpleError("Fail to install ", pkg, "!"))
   }
 
-  msg <- show_done_msg(x = pkg, action = "install")
-  show_msg(msg)
+  msg <- msg_text(x = pkg, action = "install")
+  msg_show(msg)
   options(warn = warnOp)
   invisible()
 }
@@ -76,9 +76,9 @@ kh_restore <- function(..., char, path = NULL){
   pkg <- kh_repo(pkg, path)
   khPath <- getwd()
 
-  msg <- show_done_msg(x = pkg, action = "restore")
+  msg <- msg_text(x = pkg, action = "restore")
 
-  show_msg(msg)
+  msg_show(msg)
   options(warn = warnOp)
   Sys.sleep(4)
 
@@ -217,7 +217,30 @@ pkg_name <- function(x, kh.names = c(khpkg, khsrc)){
   return(x)
 }
 
-show_msg <- function(msg, symbol = "thumb", type = "note"){
+msg_text <- function(x , action = c("install", "restore"),
+                     pkg = khpkg, not.pkg = khsrc,
+                          sepafil = "SePaaFil.R"){
+
+  notPkg <- any(x %in% not.pkg )
+  if (grepl("^khvalitet", x, ignore.case = TRUE)){
+    sepafil <- "Kvalitetskontroll.Rmd"
+  }
+
+  txt <- switch(action,
+                install = "Successfully installed ",
+                restore = "Restore completed! RStudio will restart in project "
+                )
+
+  if (notPkg){
+    msg <- paste0(txt, x, ". Check `", sepafil, "` file for usage.")
+  } else {
+    msg <- paste0(txt, x, ". Load with `library(", x,")`")
+  }
+
+  return(msg)
+}
+
+msg_show <- function(msg, symbol = "thumb", type = "note"){
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
@@ -229,27 +252,4 @@ show_msg <- function(msg, symbol = "thumb", type = "note"){
   }
 
   invisible()
-}
-
-show_done_msg <- function(x , action = c("install", "restore"),
-                          pkg = khpkg, not.pkg = khsrc,
-                          sepafil = "SePaaFil.R"){
-
-  notPkg <- any(x %in% not.pkg )
-  if (grepl("^khvalitet", x, ignore.case = TRUE)){
-    sepafil <- "Kvalitetskontroll.Rmd"
-  }
-
-  msgAct <- switch(action,
-                   install = "Successfully installed ",
-                   restore = "Successfully restored. RStudio will restart in project "
-                   )
-
-  if (notPkg){
-    msg <- paste0(msgAct, x, ". Check `", sepafil, "` file for usage.")
-  } else {
-    msg <- paste0(msgAct, x, ". Load with `library(", x,")`")
-  }
-
-  return(msg)
 }
