@@ -11,7 +11,8 @@ khpkg <- c("orgdata", "norgeo", "KHompare")
 khsrc <- c("khfunctions", "KHvalitetskontroll")
 # package bat2bat is not mantained and excluded
 
-## Load or install any packages including those from CRAN --------------
+## Load or install any packages including those from CRAN
+## ------------------------------------------------------
 kh_load <- function(..., char, silent = FALSE){
 # char - If package names in a vector object
   if (missing(char)){
@@ -33,7 +34,8 @@ kh_load <- function(..., char, silent = FALSE){
 }
 
 
-## Install specialized packages for KHelse ------------------------------
+## Install specialized packages for KHelse
+## ---------------------------------------
 kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = khsrc){
 
   warnOp <- getOption("warn")
@@ -67,8 +69,9 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
 }
 
 
-## Restore user branch for reproducibility ie. keep the same package version for
-## dependencies ---------------------------------------------------------
+## Restore user branch for reproducibility ie. keep the same
+## package version for dependencies
+## -------------------------------------------------------------
 kh_restore <- function(..., char, path = NULL){
   # char - Ignoring dots when imposing pkg as character
   warnOp <- getOption("warn")
@@ -99,7 +102,8 @@ kh_restore <- function(..., char, path = NULL){
   invisible()
 }
 
-## Make sourcing of branch for testing easily -------------------
+## Make sourcing of branch for testing easily
+## ------------------------------------------
 kh_source <- function(repo, branch, file, encoding = NULL){
 
   gitBase <- "https://raw.githubusercontent.com/helseprofil"
@@ -117,7 +121,8 @@ kh_source <- function(repo, branch, file, encoding = NULL){
 }
 
 
-## Helper functions -------------------------------------------------
+## Helper functions
+## -------------------------------------------------
 
 # Ensure correct name as in repos
 pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
