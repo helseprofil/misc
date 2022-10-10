@@ -6,10 +6,11 @@
 ## kh_restore(khfunctions)
 ## kh_load(orgdata, ggplot2) # load eller installere flere pakker også from CRAN
 
-## KHelse R packages and source files ----------------------------------
+## KHelse R packages and source files
+## ----------------------------------
+# package bat2bat is not mantained and excluded
 khpkg <- c("orgdata", "norgeo", "KHompare")
 khsrc <- c("khfunctions", "KHvalitetskontroll")
-# package bat2bat is not mantained and excluded
 
 ## Load or install any packages including those from CRAN
 ## ------------------------------------------------------
