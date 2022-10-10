@@ -12,7 +12,13 @@ khsrc <- c("khfunctions", "KHvalitetskontroll")
 # package bat2bat is not mantained and excluded
 
 ## Load or install any packages including those from CRAN --------------
-kh_load <- function(..., silent = FALSE){
+kh_load <- function(..., char, silent = FALSE){
+# char - If package names in a vector object
+  if (missing(char)){
+    pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
+  } else {
+    pkg <- char
+  }
 
   pkgs <- as.character(match.call(expand.dots = FALSE)[[2]])
   pkgs <- pkg_name(pkgs)
