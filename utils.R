@@ -20,7 +20,6 @@ kh_load <- function(..., char, silent = FALSE){
     pkg <- char
   }
 
-  pkgs <- as.character(match.call(expand.dots = FALSE)[[2]])
   pkgs <- pkg_name(pkgs)
   stop_not_package(pkgs)
   pkg_cran_install(pkgs)
