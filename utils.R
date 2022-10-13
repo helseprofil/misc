@@ -30,7 +30,7 @@ kh_load <- function(..., char, silent = FALSE){
   if (silent){
     invisible(sapply(pkgs, require, character.only = TRUE))
   } else {
-    sapply(pkgs, require, character.only = TRUE)
+    suppressPackageStartupMessages(sapply(pkgs, require, character.only = TRUE))
   }
 }
 
