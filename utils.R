@@ -38,7 +38,6 @@ kh_load <- function(..., char, silent = FALSE){
 ## Install specialized packages for KHelse
 ## ---------------------------------------
 kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = khsrc){
-
   warnOp <- getOption("warn")
   options(warn = -1)
 
@@ -106,7 +105,6 @@ kh_restore <- function(..., char, path = NULL){
 ## Make sourcing of branch for testing easily
 ## ------------------------------------------
 kh_source <- function(repo, branch, file, encoding = NULL){
-
   gitBase <- "https://raw.githubusercontent.com/helseprofil"
   gitURL <- paste(gitBase, repo, branch, file, sep = "/")
   message("Source file ", gitURL)
@@ -125,10 +123,10 @@ kh_source <- function(repo, branch, file, encoding = NULL){
 ## Helper functions
 ## -------------------------------------------------
 
-# Ensure correct name as in repos
+# Ensure correct name as it is written in repos name
+# Eg. KHfunctions repos name is khfunctions.
 pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
   x <- setNames(x, x)
-  # Exclude other packages that aren't KHelse
   x2 <- sapply(x, function(x) grep(paste0("^", x), kh.packages, ignore.case = T, value = T))
   x2 <- Filter(length, x2)
   x[names(x2)] <- x2
@@ -137,7 +135,6 @@ pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
 }
 
 kh_package <- function(pkg = khpkg){
-
   pkg <- pkg_name(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time!")
 
@@ -157,7 +154,6 @@ kh_package <- function(pkg = khpkg){
 }
 
 kh_repo <- function(pkg = c(khpkg, khsrc), ...){
-
   pkg <- pkg_name(pkg)
   pkg <- match.arg(pkg)
   if (length(pkg) > 1) stop("Can't restore more than one package at a time!")
@@ -196,7 +192,6 @@ kh_root <- function(pkg, path = NULL){
 
 # Install KHelse packages from Github
 pkg_kh_install <- function(x, pkg = khpkg){
-
   kh.pkg <- intersect(x, pkg)
   kh <- kh.pkg[!(kh.pkg %in% installed.packages()[,"Package"])]
 
@@ -218,7 +213,6 @@ pkg_cran_install <- function(x, kh.packages = c(khpkg, khsrc)){
 }
 
 stop_not_package <- function(x, not.pkg = khsrc){
-
   notPkg <- any(x %in% not.pkg)
   if (notPkg){
     pkgSrc <- intersect(x, not.pkg)[1]
@@ -253,7 +247,6 @@ msg_text <- function(x , action = c("install", "restore"),
 }
 
 msg_show <- function(msg, symbol = "thumb", type = "note"){
-
   if (requireNamespace("orgdata", quietly = TRUE)){
     orgdata:::is_color_txt(x = "",
                            msg = msg,
