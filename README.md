@@ -3,7 +3,7 @@ Denne repo inneholder ymse funksjoner eller filer som er relevante i arbeidet
 med KHelse eller som referanser.
 
 # Pakke installasjon
-For å installere KHelse standard R pakke enklere, disse funksjoner kan brukes:
+For å installere KHelse standard R pakker enklere, disse funksjoner kan brukes:
 
 - `kh_install()` for å installere pakken til vanlig bruk f.eks `kh_install(orgdata)`
 - `kh_restore()` for å videre utvikle pakken fra *user* branch dvs. beholder alle
