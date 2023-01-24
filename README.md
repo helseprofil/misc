@@ -1,8 +1,9 @@
 # misc
-Andre relevante funksjoner som kan brukes i arbeidet med KHelse.
+Denne repo inneholder ymse funksjoner eller filer som er relevante i arbeidet
+med KHelse eller som referanser.
 
-# installasjon
-For å installere KHelse standard R pakke enklere, disse funksjoner kan brukes:
+# Pakke installasjon
+For å installere KHelse standard R pakker enklere, disse funksjoner kan brukes:
 
 - `kh_install()` for å installere pakken til vanlig bruk f.eks `kh_install(orgdata)`
 - `kh_restore()` for å videre utvikle pakken fra *user* branch dvs. beholder alle
@@ -16,11 +17,10 @@ source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 
 # Bonus 
 
-Hvis man vil *load* pakker så kan man bruke `pkg_load()`. Denne funksjonen
-skal også installere pakker hvis ikke allerede finnes i `.libPaths()` før
-*loading*. Denne funksjonen gjelder bare pakker som kan installeres fra CRAN. 
+Hvis man vil *load* pakker så kan man bruke `pkg_load()`. Denne funksjonen skal
+installere pakker hvis ikke allerede finnes i `.libPaths()` før *loading*.
+Denne funksjonen gjelder bare for KHelse relaterte pakker og pakker som finnes på CRAN.
 
 ``` R
 pkg_load(dplyr, ggplot2, norgeo)
 ```
-
