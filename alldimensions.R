@@ -1,22 +1,20 @@
-# last updated: 04.11.2022
+# last updated: 24.01.2022
 
 # Code to extract all unique dimension column names. 
 # Uncomment and run, to update.
-
+# 
 # library(RODBC)
 # library(dplyr)
 # library(tidyr)
 # library(stringr)
-
 # DBroot <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/STYRING"
 # KH_db  <- "KHELSA.mdb"
 # kilde <- RODBC::odbcConnectAccess2007(paste(DBroot, KH_db, sep = "/"))#
-#
 # extradimensions <-
-# sqlQuery(kilde, "SELECT TAB1, TAB2, TAB3 FROM FILGRUPPER") %>% 
+# sqlQuery(kilde, "SELECT TAB1, TAB2, TAB3 FROM FILGRUPPER") %>%
 # pivot_longer(cols = everything()) %>%
-# filter(!is.na(value)) %>% 
-# pull(value) %>% 
+# filter(!is.na(value)) %>%
+# pull(value) %>%
 # unique()
 
 # List of all dimensions created manually, 
@@ -87,11 +85,9 @@ ALL_DIMENSIONS <-
     "JA_NEI",
     "NORM",
     "STOYKILDE",
+    "LIVSKVALITET",
     "INNVAND",
     "HYPPIGHET_TRENING",
     "SVOMMEFERD",
-    "INNV_KAT",
-    "LAND_KAT",
-    "ANT_MND",
     "MAAL",
     "REGELBRUDD")
