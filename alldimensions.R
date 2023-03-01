@@ -1,21 +1,20 @@
-# last updated: 24.01.2023
+# last updated: 01.03.2023
 
-# Code to extract all unique dimension column names. 
+# Code to extract all unique dimension column names from ACCESS. 
 # Uncomment and run, to update.
 # 
 # library(RODBC)
-# library(dplyr)
-# library(tidyr)
-# library(stringr)
+# library(data.table)
 # DBroot <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/STYRING"
 # KH_db  <- "KHELSA.mdb"
-# kilde <- RODBC::odbcConnectAccess2007(paste(DBroot, KH_db, sep = "/"))#
-# extradimensions <-
-# sqlQuery(kilde, "SELECT TAB1, TAB2, TAB3 FROM FILGRUPPER") %>%
-# pivot_longer(cols = everything()) %>%
-# filter(!is.na(value)) %>%
-# pull(value) %>%
-# unique()
+# kilde <- RODBC::odbcConnectAccess2007(paste(DBroot, KH_db, sep = "/"))
+# 
+# extradimensions <- sqlQuery(kilde, "SELECT TAB1, TAB2, TAB3 FROM FILGRUPPER")
+# setDT(extradimensions)
+# extradimensions <- melt(extradimensions, measure.vars = c("TAB1", "TAB2", "TAB3"))[!is.na(value), unique(value)]
+# 
+# # To get a text string to copy and replace list below:
+# cat(sprintf('"%s"', paste(extradimensions, collapse = '",\n"')))
 
 # List of all dimensions created manually, 
 # to avoid having to connect to db when sourced
@@ -34,7 +33,6 @@ ALL_DIMENSIONS <-
     "STATUS",
     "AARSAK",
     "SPM_ID",
-    "TRINN",
     "OVER_UNDER",
     "BMI_KAT",
     "ULIK_MAAL",
@@ -46,13 +44,11 @@ ALL_DIMENSIONS <-
     "YTELSE",
     "UTDNIVA",
     "INDIKATOR",
-    "NIVA",
     "VAKSINE",
     "KMI_KAT",
     "FVEKTKATEGORI",
     "ARSAK",
     "FORNOYDHET",
-    "SOES",
     "ANTALL_GANGER",
     "DELTARNAA",
     "NIVA_PLAGET",
@@ -60,12 +56,8 @@ ALL_DIMENSIONS <-
     "FORNOYD",
     "TYPE_VALG",
     "Utdanning",
-    "Landbakgrunn",
-    "land_kat",
-    "UTDANNING",
     "DEPRESJON",
     "INNTAK",
-    "Sivilstand",
     "STOTTE",
     "ANTALLGANGER",
     "VURDERING",
@@ -73,21 +65,28 @@ ALL_DIMENSIONS <-
     "HAR",
     "TYPE",
     "FERIE",
-    "POL",
     "BODD",
     "GRUNN",
     "MANED",
-    "DATAKILDE",
-    "HAR_POL",
     "NAVN",
     "SKJERMTID",
     "LOKALTILBUD",
     "JA_NEI",
-    "NORM",
+    "BH_NORM",
     "STOYKILDE",
     "LIVSKVALITET",
     "INNVAND",
     "HYPPIGHET_TRENING",
     "SVOMMEFERD",
     "MAAL",
-    "REGELBRUDD")
+    "REGELBRUDD",
+    "TRINN",
+    "NIVA",
+    "SOES",
+    "Landbakgrunn",
+    "UTDANNING",
+    "POL",
+    "DATAKILDE",
+    "land_kat",
+    "Sivilstand",
+    "HAR_POL")
