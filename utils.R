@@ -9,7 +9,7 @@
 ## KHelse R packages and source files
 ## ----------------------------------
 # package bat2bat is not mantained and excluded
-khpkg <- c("orgdata", "norgeo", "KHompare")
+khpkg <- c("orgdata", "norgeo", "KHompare", "lespdf")
 khsrc <- c("khfunctions", "KHvalitetskontroll")
 
 ## Load or install any packages including those from CRAN
