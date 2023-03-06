@@ -1,19 +1,19 @@
-## To use, run this code:
-## source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
-## kh_install(orgdata) #vanlig bruker
-## kh_install(khfunctions)
-## kh_restore(orgdata) #utvikler
-## kh_restore(khfunctions)
-## kh_load(orgdata, ggplot2) # load eller installere flere pakker også from CRAN
+# To use, run this code:
+# source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
+# kh_install(orgdata) #vanlig bruker
+# kh_install(khfunctions)
+# kh_restore(orgdata) #utvikler
+# kh_restore(khfunctions)
+# kh_load(orgdata, ggplot2) # load eller installere flere pakker også from CRAN
 
-## KHelse R packages and source files
-## ----------------------------------
+# KHelse R packages and source files
+# ----------------------------------
 # package bat2bat is not mantained and excluded
 khpkg <- c("orgdata", "norgeo", "KHompare", "lespdf")
 khsrc <- c("khfunctions", "KHvalitetskontroll")
 
-## Load or install any packages including those from CRAN
-## ------------------------------------------------------
+# Load or install any packages including those from CRAN
+# ------------------------------------------------------
 kh_load <- function(..., char, silent = FALSE){
   # char - If package names in a vector object
   if (missing(char)){
@@ -35,12 +35,12 @@ kh_load <- function(..., char, silent = FALSE){
 }
 
 
-## Install specialized packages for KHelse
-## ---------------------------------------
+# Install specialized packages for KHelse
+# ---------------------------------------
 kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = khsrc){
   warnOp <- getOption("warn")
   options(warn = -1)
-
+  
   if (missing(char)){
     pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
   } else {
@@ -49,6 +49,9 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
 
   pkg <- pkg_name(pkg)
   sourceGit <- is.element(pkg, not.packages)
+
+  if (length(sourceGit) > 1)
+    stop("Can't install more than one package at a time! Use `kh_load()` instead.")
 
   if (sourceGit){
     kh_restore(char = pkg, path = path)
@@ -69,9 +72,9 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
 }
 
 
-## Restore user branch for reproducibility ie. keep the same
-## package version for dependencies
-## -------------------------------------------------------------
+# Restore user branch for reproducibility ie. keep the same
+# package version for dependencies
+# -------------------------------------------------------------
 kh_restore <- function(..., char, path = NULL){
   # char - Ignoring dots when imposing pkg as character
   warnOp <- getOption("warn")
@@ -102,8 +105,8 @@ kh_restore <- function(..., char, path = NULL){
   invisible()
 }
 
-## Make sourcing of branch for testing easily
-## ------------------------------------------
+# Make sourcing of branch for testing easily
+# ------------------------------------------
 kh_source <- function(repo, branch, file, encoding = NULL){
   gitBase <- "https://raw.githubusercontent.com/helseprofil"
   gitURL <- paste(gitBase, repo, branch, file, sep = "/")
@@ -120,8 +123,8 @@ kh_source <- function(repo, branch, file, encoding = NULL){
 }
 
 
-## Helper functions
-## -------------------------------------------------
+# Helper functions
+# -------------------------------------------------
 
 # Ensure correct name as it is written in repos name
 # Eg. KHfunctions repos name is khfunctions.
