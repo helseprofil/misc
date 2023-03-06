@@ -139,7 +139,7 @@ pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
 
 kh_package <- function(pkg = khpkg){
   pkg <- pkg_name(pkg)
-  if (length(pkg) > 1) stop("Can't install more than one package at a time!")
+  if (length(pkg) > 1) stop("Can't install more than one package at a time! Use `kh_load()` instead.")
 
   install_cran_pkg("remotes")
 
