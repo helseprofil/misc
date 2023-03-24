@@ -51,7 +51,7 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
   sourceGit <- is.element(pkg, not.packages)
 
   if (length(sourceGit) > 1)
-    stop("Can't install more than one package at a time! Use `kh_load()` instead.")
+    stop("Can't install more than one package at a time! Try `kh_load()` instead.")
 
   if (sourceGit){
     kh_restore(char = pkg, path = path)
@@ -139,7 +139,7 @@ pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
 
 kh_package <- function(pkg = khpkg){
   pkg <- pkg_name(pkg)
-  if (length(pkg) > 1) stop("Can't install more than one package at a time! Use `kh_load()` instead.")
+  if (length(pkg) > 1) stop("Can't install more than one package at a time! Try `kh_load()` instead.")
 
   install_cran_pkg("remotes")
 
