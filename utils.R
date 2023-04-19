@@ -262,3 +262,24 @@ msg_show <- function(msg, symbol = "thumb", type = "note"){
 
   invisible()
 }
+
+#' are_same
+#' 
+#' Check if two functions are identical
+#'
+#' @param f1 
+#' @param f2 
+are_same <- function(f1, f2) {
+  f_new_text <- gsub("^#.*\n", "", deparse(f1))
+  f_old_text <- gsub("^#.*\n", "", deparse(f2))
+  
+  if (identical(gsub("\\s", "", f_new_text), gsub("\\s", "", f_old_text))) {
+    return(TRUE)
+  } else {
+    cat("The functions are not identical:\n")
+    cat("=============================\n\n")
+    diff <- diffobj::diffPrint(f_new_text, f_old_text)
+    print(diff)
+    return(FALSE)
+  }
+}
