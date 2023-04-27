@@ -312,6 +312,3 @@ list_funs <- function(package = NULL) {
   
   cat(paste0(regex_str, "\\("))
 }
-
-
-            
