@@ -265,7 +265,7 @@ msg_show <- function(msg, symbol = "thumb", type = "note"){
 
 #' are_same
 #' 
-#' Check if two functions are identical
+#' Check if two functions are identical, useful when developing a function to highlight differences. 
 #'
 #' @param f1 
 #' @param f2 
@@ -282,4 +282,20 @@ are_same <- function(f1, f2) {
     print(diff)
     return(FALSE)
   }
+}
+
+#' list_funs
+#' 
+#' returns a list of all functions from a package 
+#' in the format `fun1\(|fun2\(|` etc. Useful to search a 
+#' project for use of these functions when not specified with `package::function()`..
+#'
+#' @param package 
+list_funs <- function(package = NULL) {
+  
+  funs <- getNamespaceExports(package)
+  funs <- funs[order(funs)]
+  regex_str <- paste0(funs, collapse = "\\(|")
+  
+  cat(paste0(regex_str, "\\("))
 }
