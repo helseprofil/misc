@@ -295,7 +295,23 @@ list_funs <- function(package = NULL) {
   
   funs <- getNamespaceExports(package)
   funs <- funs[order(funs)]
+  
+  # Add "\\" before characters that should be escaped (written by ChatGPT)
+  escape_chars <- function(string) {
+    chars_to_escape <- c("(", ")", "[", "]", "$", ".", "|")
+    escaped_chars <- c("\\(", "\\)", "\\[", "\\]", "\\$", "\\.", "\\|")
+    for (i in seq_along(chars_to_escape)) {
+      string <- gsub(chars_to_escape[i], escaped_chars[i], string, fixed = TRUE)
+    }
+    return(string)
+  }
+  
+  funs <- escape_chars(funs)
+  
   regex_str <- paste0(funs, collapse = "\\(|")
   
   cat(paste0(regex_str, "\\("))
 }
+
+
+            
