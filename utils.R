@@ -141,7 +141,7 @@ kh_package <- function(pkg = khpkg){
   pkg <- pkg_name(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time! Try `kh_load()` instead.")
 
-  install_cran_pkg("remotes")
+  install_cran_pkg("pak")
 
   if (requireNamespace(pkg, quietly = TRUE)){
     if (isTRUE(isNamespaceLoaded(pkg))){
@@ -152,7 +152,7 @@ kh_package <- function(pkg = khpkg){
 
   message("Start installing package ", pkg)
   pkgRepo <- paste0("helseprofil/", pkg)
-  remotes::install_github(pkgRepo, upgrade = "always")
+  pak::pkg_install(pkgRepo, upgrade = "always")
   invisible(pkg)
 }
 
