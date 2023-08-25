@@ -37,7 +37,13 @@ kh_load <- function(..., char, silent = FALSE){
 
 # Install specialized packages for KHelse
 # ---------------------------------------
-kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = khsrc){
+kh_install <- function(..., path = NULL,
+                       char, packages = khpkg,
+                       not.packages = khsrc,
+                       upgrade = FALSE){
+  # path - Specify the path to install/restore if not using default ie. c:/Users/YourUserName/helseprofil
+  # char - If using character vector object
+  # upgrade - if TRUE then upgrade all the dependencies
   warnOp <- getOption("warn")
   options(warn = -1)
   
@@ -76,7 +82,8 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
 # package version for dependencies
 # -------------------------------------------------------------
 kh_restore <- function(..., char, path = NULL){
-  # char - Ignoring dots when imposing pkg as character
+  # char - Ignoring dots when imposing pkg as character in a vector object
+  # path - Specify the path to install if not using default ie. c:/Users/YourUserName/helseprofil
   warnOp <- getOption("warn")
   options(warn = -1)
 
@@ -137,7 +144,7 @@ pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
   return(x)
 }
 
-kh_package <- function(pkg = khpkg){
+kh_package <- function(pkg = khpkg, upgrade = upgrade){
   pkg <- pkg_name(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time! Try `kh_load()` instead.")
 
@@ -152,7 +159,7 @@ kh_package <- function(pkg = khpkg){
 
   message("Start installing package ", pkg)
   pkgRepo <- paste0("helseprofil/", pkg)
-  pak::pkg_install(pkgRepo, upgrade = FALSE)
+  pak::pkg_install(pkgRepo, upgrade = upgrade)
   invisible(pkg)
 }
 
