@@ -152,7 +152,7 @@ kh_package <- function(pkg = khpkg){
 
   message("Start installing package ", pkg)
   pkgRepo <- paste0("helseprofil/", pkg)
-  pak::pkg_install(pkgRepo, upgrade = "always")
+  pak::pkg_install(pkgRepo, upgrade = FALSE)
   invisible(pkg)
 }
 
