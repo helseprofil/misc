@@ -46,7 +46,7 @@ kh_install <- function(..., path = NULL,
   # upgrade - if TRUE then upgrade all the dependencies
   warnOp <- getOption("warn")
   options(warn = -1)
-  
+
   if (missing(char)){
     pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
   } else {
@@ -62,7 +62,7 @@ kh_install <- function(..., path = NULL,
   if (sourceGit){
     kh_restore(char = pkg, path = path)
   } else {
-    pkg <- kh_package(pkg)
+    pkg <- kh_package(pkg, upgrade)
   }
 
   khp <- intersect(pkg, packages)
