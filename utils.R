@@ -53,6 +53,8 @@ kh_install <- function(..., path = NULL,
     pkg <- char
   }
 
+  repo_branch(x = pkg)
+
   pkg <- pkg_name(pkg)
   sourceGit <- is.element(pkg, not.packages)
 
@@ -62,7 +64,7 @@ kh_install <- function(..., path = NULL,
   if (sourceGit){
     kh_restore(char = pkg, path = path)
   } else {
-    pkg <- kh_package(pkg, upgrade)
+    pkg <- kh_package(pkg, upgrade, gitBranch)
   }
 
   khp <- intersect(pkg, packages)
@@ -144,7 +146,7 @@ pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
   return(x)
 }
 
-kh_package <- function(pkg = khpkg, upgrade = upgrade){
+kh_package <- function(pkg = khpkg, upgrade = upgrade, branch = NULL){
   pkg <- pkg_name(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time! Try `kh_load()` instead.")
 
@@ -158,9 +160,14 @@ kh_package <- function(pkg = khpkg, upgrade = upgrade){
   }
 
   message("Start installing package ", pkg)
+  z <- pkg
+
+  if (!is.null(branch))
+    pkg <- paste0(pkg, "@", branch)
+
   pkgRepo <- paste0("helseprofil/", pkg)
   pak::pkg_install(pkgRepo, upgrade = upgrade)
-  invisible(pkg)
+  invisible(z)
 }
 
 kh_repo <- function(pkg = c(khpkg, khsrc), ...){
@@ -187,6 +194,20 @@ kh_repo <- function(pkg = c(khpkg, khsrc), ...){
   renv::activate()
   renv::restore()
   invisible(pkg)
+}
+
+repo_branch <- function(x, sep = "@"){
+
+  if(grepl(sep, x)){
+    z <- unlist(strsplit(x, sep))
+    x <- z[1]
+    g <- z[2]
+  } else {
+    g <- NULL
+  }
+
+  assign("pkg", x, parent.frame())
+  assign("gitBranch", g, parent.frame())
 }
 
 kh_root <- function(pkg, path = NULL){
