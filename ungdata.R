@@ -1,10 +1,15 @@
+# To run (change file year and name if needed):
+# source("https://raw.githubusercontent.com/helseprofil/misc/main/ungdata.R") 
+# file <- readUngdata(2023, "Ungdata 2010-2022.sav")
+# ungdataKey(file)
+
 readUngdata <- function(year, file){
   basepath <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/ORGDATA/NOVA/Ungdata/"
   path <- file.path(basepath, year, "ORG", file)
   haven::read_spss(path)
 }
 
-OppsummerUngdata <- function(fil){
+ungdataKey <- function(file){
   
   cols <- names(fil)
   cols <- cols[!cols %in% c("år", "tidspunkt", "kommune", "fylke", "søs", "vekt2020") & !grepl("bydel",cols)]
@@ -54,8 +59,3 @@ OppsummerUngdata <- function(fil){
   data.table::fwrite(tab, savepath, sep = ";", sep2 = c("", "|",""), bom = T)
   cat("File written to", savepath)
 }
-
-# Example
-# source("https://raw.githubusercontent.com/helseprofil/misc/main/ungdata.R") 
-# fil <- readUngdata(2023, "Ungdata 2010-2022.sav")
-# OppsummerUngdata(fil)
