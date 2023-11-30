@@ -1,8 +1,3 @@
-require(data.table)
-require(collapse)
-require(haven)
-require(fs)
-
 readUngdata <- function(year, file){
   basepath <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/ORGDATA/NOVA/Ungdata/"
   path <- file.path(basepath, year, "ORG", file)
@@ -12,7 +7,6 @@ readUngdata <- function(year, file){
 OppsummerUngdata <- function(fil){
   
   cols <- names(fil)
-  
   cols <- cols[!cols %in% c("år", "tidspunkt", "kommune", "fylke", "søs", "vekt2020") & !grepl("bydel",cols)]
   
   id <- list() 
@@ -52,9 +46,10 @@ OppsummerUngdata <- function(fil){
   tab[, id := NULL]
   
   rootDir <- file.path(fs::path_home(), "helseprofil")
-  if (!fs::dir_exists(rootDir))
+  if (!fs::dir_exists(rootDir)){
     fs::dir_create(rootDir)
-  savepath <- file.path(rootDir, "ungdatanøkkel.csv")
+  }
+  savepath <- file.path(rootDir, "ungdatakey.csv")
   
   data.table::fwrite(tab, savepath, sep = ";", sep2 = c("", "|",""), bom = T)
   cat("File written to", savepath)
