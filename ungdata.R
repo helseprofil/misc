@@ -1,9 +1,7 @@
-library(data.table)
-library(collapse)
-library(haven)
-library(fs)
-
-cols["søs":cols[length(cols)]]
+require(data.table)
+require(collapse)
+require(haven)
+require(fs)
 
 readUngdata <- function(year, file){
   basepath <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/ORGDATA/NOVA/Ungdata/"
@@ -63,5 +61,6 @@ OppsummerUngdata <- function(fil){
 }
 
 # Example
+# source("https://raw.githubusercontent.com/helseprofil/misc/main/ungdata.R") 
 # fil <- readUngdata(2023, "Ungdata 2010-2022.sav")
 # OppsummerUngdata(fil)
