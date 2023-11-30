@@ -3,6 +3,8 @@ library(collapse)
 library(haven)
 library(fs)
 
+cols["søs":cols[length(cols)]]
+
 readUngdata <- function(year, file){
   basepath <- "F:/Forskningsprosjekter/PDB 2455 - Helseprofiler og til_/PRODUKSJON/ORGDATA/NOVA/Ungdata/"
   path <- file.path(basepath, year, "ORG", file)
@@ -13,7 +15,7 @@ OppsummerUngdata <- function(fil){
   
   cols <- names(fil)
   
-  cols <- cols[!cols %in% c("år", "tidspunkt", "kommune", "fylke", "søs")]
+  cols <- cols[!cols %in% c("år", "tidspunkt", "kommune", "fylke", "søs", "vekt2020") & !grepl("bydel",cols)]
   
   id <- list() 
   colname <- list()
@@ -49,12 +51,12 @@ OppsummerUngdata <- function(fil){
   
   tab <- collapse::join(tab1, tab2, on = "id", how = "full")
   setkey(tab, id)
+  tab[, id := NULL]
   
   rootDir <- file.path(fs::path_home(), "helseprofil")
   if (!fs::dir_exists(rootDir))
     fs::dir_create(rootDir)
-  savepath <- file.path(rootDir, "Oversikt ungdata.csv")
-  
+  savepath <- file.path(rootDir, "ungdatanøkkel.csv")
   
   data.table::fwrite(tab, savepath, sep = ";", sep2 = c("", "|",""), bom = T)
   cat("File written to", savepath)
