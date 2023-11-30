@@ -15,6 +15,15 @@ For å tilgjengeligjøre og kunne bruke disse funksjonene, først må denne kode
 source("https://raw.githubusercontent.com/helseprofil/misc/main/utils.R")
 ```
 
+Standard branch for installasjon er `master` eller `main`. For å bruke andre
+branch kan gjøres ved bruk av `@` f.eks for å installere fra branch `iss007`
+
+``` R
+kh_install(orgdata@iss007)
+```
+
+`
+
 # Bonus 
 
 Hvis man vil *load* pakker så kan man bruke `pkg_load()`. Denne funksjonen skal

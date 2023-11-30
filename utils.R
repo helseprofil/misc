@@ -37,15 +37,23 @@ kh_load <- function(..., char, silent = FALSE){
 
 # Install specialized packages for KHelse
 # ---------------------------------------
-kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = khsrc){
+kh_install <- function(..., path = NULL,
+                       char, packages = khpkg,
+                       not.packages = khsrc,
+                       upgrade = FALSE){
+  # path - Specify the path to install/restore if not using default ie. c:/Users/YourUserName/helseprofil
+  # char - If using character vector object
+  # upgrade - if TRUE then upgrade all the dependencies
   warnOp <- getOption("warn")
   options(warn = -1)
-  
+
   if (missing(char)){
     pkg <- as.character(match.call(expand.dots = FALSE)[[2]])
   } else {
     pkg <- char
   }
+
+  repo_branch(x = pkg)
 
   pkg <- pkg_name(pkg)
   sourceGit <- is.element(pkg, not.packages)
@@ -56,7 +64,7 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
   if (sourceGit){
     kh_restore(char = pkg, path = path)
   } else {
-    pkg <- kh_package(pkg)
+    pkg <- kh_package(pkg, upgrade, gitBranch)
   }
 
   khp <- intersect(pkg, packages)
@@ -76,7 +84,8 @@ kh_install <- function(..., path = NULL, char, packages = khpkg, not.packages = 
 # package version for dependencies
 # -------------------------------------------------------------
 kh_restore <- function(..., char, path = NULL){
-  # char - Ignoring dots when imposing pkg as character
+  # char - Ignoring dots when imposing pkg as character in a vector object
+  # path - Specify the path to install if not using default ie. c:/Users/YourUserName/helseprofil
   warnOp <- getOption("warn")
   options(warn = -1)
 
@@ -137,11 +146,11 @@ pkg_name <- function(x, kh.packages = c(khpkg, khsrc)){
   return(x)
 }
 
-kh_package <- function(pkg = khpkg){
+kh_package <- function(pkg = khpkg, upgrade = upgrade, branch = NULL){
   pkg <- pkg_name(pkg)
   if (length(pkg) > 1) stop("Can't install more than one package at a time! Try `kh_load()` instead.")
 
-  install_cran_pkg("remotes")
+  install_cran_pkg("pak")
 
   if (requireNamespace(pkg, quietly = TRUE)){
     if (isTRUE(isNamespaceLoaded(pkg))){
@@ -151,9 +160,14 @@ kh_package <- function(pkg = khpkg){
   }
 
   message("Start installing package ", pkg)
+  z <- pkg
+
+  if (!is.null(branch))
+    pkg <- paste0(pkg, "@", branch)
+
   pkgRepo <- paste0("helseprofil/", pkg)
-  remotes::install_github(pkgRepo, upgrade = "always")
-  invisible(pkg)
+  pak::pkg_install(pkgRepo, upgrade = upgrade)
+  invisible(z)
 }
 
 kh_repo <- function(pkg = c(khpkg, khsrc), ...){
@@ -180,6 +194,20 @@ kh_repo <- function(pkg = c(khpkg, khsrc), ...){
   renv::activate()
   renv::restore()
   invisible(pkg)
+}
+
+repo_branch <- function(x, sep = "@"){
+
+  if(grepl(sep, x)){
+    z <- unlist(strsplit(x, sep))
+    x <- z[1]
+    g <- z[2]
+  } else {
+    g <- NULL
+  }
+
+  assign("pkg", x, parent.frame())
+  assign("gitBranch", g, parent.frame())
 }
 
 kh_root <- function(pkg, path = NULL){
