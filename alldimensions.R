@@ -90,3 +90,7 @@ ALL_DIMENSIONS <-
     "land_kat",
     "Sivilstand",
     "HAR_POL")
+
+# Manually add special dimension (QALY-kube)
+ALL_DIMENSIONS <- c(ALL_DIMENSIONS,
+                    "ALDERl")
