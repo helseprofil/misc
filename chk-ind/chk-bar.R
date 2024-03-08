@@ -51,7 +51,13 @@ check_bar <- function(type = c("FHP", "OVP"),
   # Add LPnr if not present (not present i fylke?)
   if(!"LPnr" %in% names(bar)){
     bar[, LPnr := rev(indikator_kodet - 1)]
-    data.table::setcolorder(bar, c("stedskode_string", "stedskode_numeric", "LPnr"))
+    data.table::setcolorder(bar, "LPnr", after = "stedskode_numeric")
+  }
+  
+  if(0 %in% bar$LPnr){
+    bar[, corrected_LPnr := LPnr + 1]
+    data.table::setcolorder(bar, "corrected_LPnr", after = "LPnr")
+    message("OBS: LPnr contain 0, corrected_LPnr corresponds to barometer")
   }
   
   data.table::setkey(bar, LPnr)
@@ -67,7 +73,7 @@ check_bar <- function(type = c("FHP", "OVP"),
   
   data.table::setDT(indraw)
   indV1 <- grep("Verdi", names(indraw), value = TRUE)
-  indVar <- c("Aar", "LPnr","Sted_kode", "SpraakId", indV1)
+  indVar <- c("Aar", "LPnr", "corrected_LPnr", "Sted_kode", "SpraakId", indV1)
   indraw[, setdiff(names(indraw), indVar) := NULL]
   ind <- indraw[SpraakId == "BOKMAAL"]
 
