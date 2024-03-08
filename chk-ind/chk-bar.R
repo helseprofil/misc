@@ -47,6 +47,15 @@ check_bar <- function(type = c("FHP", "OVP"),
 
   cat("...")
   data.table::setkey(bar, indikator_kodet)
+  
+  # Add LPnr if not present (not present i fylke?)
+  if(!"LPnr" %in% names(bar)){
+    bar[, LPnr := rev(indikator_kodet - 1)]
+    data.table::setcolorder(bar, c("stedskode_string", "stedskode_numeric", "LPnr"))
+  }
+  
+  data.table::setkey(bar, LPnr)
+  bar[, indikator_kodet := NULL]
 
   ## barometer id starts from 2 and is inverse of indikator id
   ## this makes it equivalent to indikator id
