@@ -1,4 +1,4 @@
-#' getProfileSystem
+#' ProfileSystems
 #' 
 #' This function installs all packages and projects needed for FHP/OVP-related work
 #' 
@@ -12,7 +12,7 @@
 #' getProfileSystem()
 #' getProfileSystem(path = "Your/Preferred/Path)
 #' 
-getProfileSystem <- function(path = NULL){
+ProfileSystems <- function(path = NULL){
   
 packages <- c("collapse",
               "conflicted",
@@ -104,5 +104,4 @@ if(fs::dir_exists(KHvalitetskontroll_dir)){
   invisible(system(paste("git clone", KHvalitetskontroll_repo, KHvalitetskontroll_dir)))
   message("KHvalitetskontroll cloned into: ", KHvalitetskontroll_dir)
 }
-
 }
