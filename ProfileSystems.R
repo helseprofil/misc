@@ -32,6 +32,7 @@ ProfileSystems <- function(path = NULL,
     packages <- c("collapse",
                   "conflicted",
                   "data.table",
+                  "devtools",
                   "DBI",
                   "dplyr",
                   "DT",
@@ -53,15 +54,23 @@ ProfileSystems <- function(path = NULL,
                   "sas7bdat",
                   "sqldf",
                   "stringr",
+                  "usethis",
+                  "testthat",
                   "XML",
                   "zoo")
+    
+    missingpackages <- setdiff(packages, installed.packages()[, "Package"])
+    
+    if (length(missingpackages) > 0) {
+      message(paste("Installing missing packages:", paste(missingpackages, collapse = ", ")))
+      install.packages(missingpackages)
+    }
 
-    message("\nInstalling CRAN packages...")
-    options(warn = -1)
-    suppressPackageStartupMessages(sapply(packages, 
-                                          require, 
-                                          character.only = TRUE))
-    options(warn = TRUE)
+    # options(warn = -1)
+    # suppressPackageStartupMessages(sapply(packages, 
+    #                                       require, 
+    #                                       character.only = TRUE))
+    # options(warn = TRUE)
   
   # Install packages from GitHub
     message("\nInstalling norgeo...")
