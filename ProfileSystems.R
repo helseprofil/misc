@@ -7,23 +7,36 @@
 #' 
 #' @param path root folder where you want the projects to be stored
 #' @param all Default = TRUE, will install/update all objects
-#' @param packages default = FALSE, if all = FALSE, set this option to TRUE to install packages
+#' @param packages default = FALSE, if all = FALSE, set this option to TRUE to install CRAN packages
+#' @param norgeo default = FALSE, if all = FALSE, set this option to TRUE to install norgeo
+#' @param orgdata default = FALSE, if all = FALSE, set this option to TRUE to install orgdata
 #' @param khfunctions default = FALSE, if all = FALSE, set this option to TRUE to install khfunctions
 #' @param KHvalitetskontroll default = FALSE, if all = FALSE, set this option to TRUE to install khvalitetskontroll
 #' 
 #' @examples
 #' 
-#' getProfileSystem()
-#' getProfileSystem(path = "Your/Preferred/Path)
+#' source("https://raw.githubusercontent.com/helseprofil/misc/main/ProfileSystems.R")
 #' 
+#' Install everything with:
+#' ProfileSystem(all = T)
+#' 
+#' Install specific parts with:
+#' ProfileSystem(all = F, packages = T, khfunctions = T, KHvalitetskontroll = T)
+#' 
+#' Install to other path than `C:/Users/name/helseprofil`
+#' ProfileSystem(path = "Your/Preferred/Path)
 ProfileSystems <- function(path = NULL,
                            all = TRUE,
                            packages = FALSE,
+                           norgeo = FALSE,
+                           orgdata = FALSE,
                            khfunctions = FALSE,
                            KHvalitetskontroll = FALSE){
   
   if(isTRUE(all)){
     packages <- TRUE
+    norgeo <- TRUE
+    orgdata <- TRUE
     khfunctions <- TRUE
     KHvalitetskontroll <- TRUE
   }
@@ -65,21 +78,18 @@ ProfileSystems <- function(path = NULL,
       message(paste("Installing missing packages:", paste(missingpackages, collapse = ", ")))
       install.packages(missingpackages)
     }
-
-    # options(warn = -1)
-    # suppressPackageStartupMessages(sapply(packages, 
-    #                                       require, 
-    #                                       character.only = TRUE))
-    # options(warn = TRUE)
+  }
   
   # Install packages from GitHub
+  if(isTRUE(norgeo)){
     message("\nInstalling norgeo...")
     pak::pkg_install("helseprofil/norgeo")
+  }
   
+  if(isTRUE(orgdata)){
     message("\nInstalling orgdata...")
     pak::pkg_install("helseprofil/orgdata")
   }
-  
   # Set base folder for installing projects. Always create the helseprofil folder as well. 
   message("\nGenerating folders:")
   helseprofil <- file.path(fs::path_home(), "helseprofil")
@@ -135,4 +145,3 @@ ProfileSystems <- function(path = NULL,
   
   message("\nWOHOO, done! \n\nOpen the .Rproj file in the project folders to use the systems.")
 }
-
