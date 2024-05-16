@@ -63,6 +63,7 @@ ProfileSystems <- function(path = NULL,
                   "plyr",
                   "purrr",
                   "readxl",
+                  "remotes",
                   "RODBC",
                   "sas7bdat",
                   "sqldf",
@@ -83,12 +84,12 @@ ProfileSystems <- function(path = NULL,
   # Install packages from GitHub
   if(isTRUE(norgeo)){
     message("\nInstalling norgeo...")
-    pak::pkg_install("helseprofil/norgeo")
+    remotes::install_github("helseprofil/norgeo")
   }
   
   if(isTRUE(orgdata)){
     message("\nInstalling orgdata...")
-    pak::pkg_install("helseprofil/orgdata")
+    remotes::install_github("helseprofil/orgdata")
   }
   # Set base folder for installing projects. Always create the helseprofil folder as well. 
   message("\nGenerating folders:")
