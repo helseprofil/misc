@@ -111,38 +111,71 @@ ProfileSystems <- function(path = NULL,
   }
 
   message("\n\nR Projects will be installed into ", path)
-
-  if(isTRUE(khfunctions)){
-    message("\nInstalling khfunctions (master branch)...")
-    khfunctions_repo <- "https://github.com/helseprofil/khfunctions.git"
-    khfunctions_dir <- file.path(path, "khfunctions")
-    if(fs::dir_exists(khfunctions_dir)){
-      setwd(khfunctions_dir)
-      invisible(system("git fetch origin master"))
-      invisible(system("git reset --hard origin/master"))
-      invisible(system("git pull"))
-      message("khfunctions master branch restored to current GitHub version")
-      } else {
-        invisible(system(paste("git clone", khfunctions_repo, khfunctions_dir)))
-        message("khfunctions cloned into: ", khfunctions_dir)
-      }
-  }
   
-  if(isTRUE(KHvalitetskontroll)){
-    message("\nInstalling KHvalitetskontroll (main branch)...")
-    KHvalitetskontroll_repo <- "https://github.com/helseprofil/KHvalitetskontroll.git"
-    KHvalitetskontroll_dir <- file.path(path, "KHvalitetskontroll")
-    if(fs::dir_exists(KHvalitetskontroll_dir)){
-      setwd(KHvalitetskontroll_dir)
-      invisible(system("git fetch origin main"))
-      invisible(system("git reset --hard origin/main"))
-      invisible(system("git pull"))
-      message("KHvalitetskontroll main branch restored to current GitHub version")
+  projects <- c("khfunctions", "KHvalitetskontroll")
+  isProjects <- c(khfunctions, KHvalitetskontroll)
+  projects <- projects[isProjects]
+  
+  if(length(projects) > 0){
+    
+    for(project in projects){
+      message("\nInstalling ", project, " (master branch)...")
+      repo <- paste0("https://github.com/helseprofil/", project, ".git")
+      dir <- file.path(path, project)
+      if(fs::dir_exists(dir)){
+        setwd(dir)
+        message("\n", dir, " already exists, updating master branch to current GitHub version...")
+        invisible(system("git fetch origin master"))
+        invisible(system("git reset --hard origin/master"))
+        invisible(system("git pull"))
       } else {
-        invisible(system(paste("git clone", KHvalitetskontroll_repo, KHvalitetskontroll_dir)))
-        message("KHvalitetskontroll cloned into: ", KHvalitetskontroll_dir)
+        invisible(system(paste("git clone", repo, dir)))
+        message(project, " cloned into: ", dir)
       }
+    }  
   }
   
   message("\nWOHOO, done! \n\nOpen the .Rproj file in the project folders to use the systems.")
 }
+
+
+#' Clones all projects into a folder
+#'
+#' @param path 
+DevelopSystems <- function(path){
+  
+  
+  projects <- c("misc", 
+                "manual", 
+                "khfunctions", 
+                "KHvalitetskontroll", 
+                "norgeo", 
+                "orgdata", 
+                "config", 
+                "GeoMaster", 
+                "snutter")
+  
+  if(is.null(path)){
+    stop("Path not set")
+  }
+  
+  if(!fs::dir_exists(path)){
+    fs::dir_create(path)
+  }
+  
+  for(project in projects){
+    
+    repo <- paste0("https://github.com/helseprofil/", project, ".git")
+    dir <- file.path(path, project)
+    
+    if(!fs::dir_exists(dir)){
+      invisible(system(paste("git clone", repo, dir)))
+      message(project, " cloned into: ", dir)
+    } else {
+      message(dir, " already exists")
+    }
+    
+  }
+}
+
+  
