@@ -119,14 +119,17 @@ ProfileSystems <- function(path = NULL,
   if(length(projects) > 0){
     
     for(project in projects){
-      message("\nInstalling ", project, " (master branch)...")
+      branch <- data.table::fcase(project == "khfunctions", "master",
+                                  project == "KHvalitetskontroll", "main",
+                                  default = "main")
+      message("\nInstalling ", project, " (", branch, " branch)...")
       repo <- paste0("https://github.com/helseprofil/", project, ".git")
       dir <- file.path(path, project)
       if(fs::dir_exists(dir)){
         setwd(dir)
         message("\n", dir, " already exists, updating master branch to current GitHub version...")
-        invisible(system("git fetch origin master"))
-        invisible(system("git reset --hard origin/master"))
+        invisible(system(paste0("git fetch origin ", branch)))
+        invisible(system(paste0("git reset --hard origin/", branch)))
         invisible(system("git pull"))
       } else {
         invisible(system(paste("git clone", repo, dir)))
