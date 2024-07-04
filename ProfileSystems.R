@@ -154,6 +154,8 @@ DevelopSystems <- function(path){
                 "KHvalitetskontroll", 
                 "norgeo", 
                 "orgdata", 
+                "orgcube",
+                "qualcontrol",
                 "config", 
                 "GeoMaster", 
                 "snutter")
