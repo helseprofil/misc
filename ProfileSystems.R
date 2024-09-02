@@ -33,6 +33,8 @@ ProfileSystems <- function(path = NULL,
                            khfunctions = FALSE,
                            KHvalitetskontroll = FALSE){
   
+  check_R_version()
+  
   if(isTRUE(all)){
     packages <- TRUE
     norgeo <- TRUE
@@ -147,7 +149,8 @@ ProfileSystems <- function(path = NULL,
 #' @param path 
 DevelopSystems <- function(path){
   
-  
+  check_R_version()
+
   projects <- c("misc", 
                 "manual", 
                 "khfunctions", 
@@ -181,6 +184,10 @@ DevelopSystems <- function(path){
     }
     
   }
+}
+
+check_R_version <- function(){
+  if(version$minor < 4.1) stop("Du bruker en gammel versjon av R, installer versjon 4.1 eller nyere")
 }
 
   
