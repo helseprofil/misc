@@ -31,6 +31,7 @@ ProfileSystems <- function(path = NULL,
                            norgeo = FALSE,
                            orgdata = FALSE,
                            qualcontrol = FALSE,
+                           produksjon = FALSE,
                            khfunctions = FALSE,
                            KHvalitetskontroll = FALSE){
   
@@ -41,6 +42,7 @@ ProfileSystems <- function(path = NULL,
     norgeo <- TRUE
     orgdata <- TRUE
     qualcontrol <- TRUE
+    produksjon <- TRUE
     khfunctions <- TRUE
     KHvalitetskontroll <- TRUE
   }
@@ -121,15 +123,14 @@ ProfileSystems <- function(path = NULL,
 
   message("\n\nR Projects will be installed into ", path)
   
-  projects <- c("khfunctions", "KHvalitetskontroll")
-  isProjects <- c(khfunctions, KHvalitetskontroll)
+  projects <- c("produksjon", "khfunctions", "KHvalitetskontroll")
+  isProjects <- c(produksjon, khfunctions, KHvalitetskontroll)
   projects <- projects[isProjects]
   
   if(length(projects) > 0){
     
     for(project in projects){
       branch <- data.table::fcase(project == "khfunctions", "master",
-                                  project == "KHvalitetskontroll", "main",
                                   default = "main")
       message("\nInstalling ", project, " (", branch, " branch)...")
       repo <- paste0("https://github.com/helseprofil/", project, ".git")
@@ -160,6 +161,7 @@ DevelopSystems <- function(path){
 
   projects <- c("misc", 
                 "manual", 
+                "produksjon",
                 "khfunctions", 
                 "KHvalitetskontroll", 
                 "norgeo", 
