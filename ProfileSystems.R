@@ -30,6 +30,7 @@ ProfileSystems <- function(path = NULL,
                            packages = FALSE,
                            norgeo = FALSE,
                            orgdata = FALSE,
+                           qualcontrol = FALSE,
                            khfunctions = FALSE,
                            KHvalitetskontroll = FALSE){
   
@@ -39,6 +40,7 @@ ProfileSystems <- function(path = NULL,
     packages <- TRUE
     norgeo <- TRUE
     orgdata <- TRUE
+    qualcontrol <- TRUE
     khfunctions <- TRUE
     KHvalitetskontroll <- TRUE
   }
@@ -92,6 +94,11 @@ ProfileSystems <- function(path = NULL,
   if(isTRUE(orgdata)){
     message("\nInstalling orgdata...")
     remotes::install_github("helseprofil/orgdata")
+  }
+  
+  if(isTRUE(qualcontrol)){
+    message("\nInstalling qualcontrol...")
+    remotes::install_github("helseprofil/qualcontrol")
   }
   # Set base folder for installing projects. Always create the helseprofil folder as well. 
   message("\nGenerating folders:")
