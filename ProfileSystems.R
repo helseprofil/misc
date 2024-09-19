@@ -108,9 +108,7 @@ ProfileSystems <- function(path = NULL,
   if(!fs::dir_exists(helseprofil)){
     fs::dir_create(helseprofil)
     cat("\n- ", helseprofil)
-  } else {
-    cat("\n- ", helseprofil, " already exists")
-  }
+  } 
   
   if(is.null(path)){
     path <- helseprofil
@@ -121,13 +119,13 @@ ProfileSystems <- function(path = NULL,
       cat("\n- ", path)
   }
 
-  message("\n\nR Projects will be installed into ", path)
-  
   projects <- c("produksjon", "khfunctions", "KHvalitetskontroll")
   isProjects <- c(produksjon, khfunctions, KHvalitetskontroll)
   projects <- projects[isProjects]
   
   if(length(projects) > 0){
+    
+    message("\n\nR Projects will be installed into ", path)
     
     for(project in projects){
       branch <- data.table::fcase(project == "khfunctions", "master",
@@ -146,9 +144,9 @@ ProfileSystems <- function(path = NULL,
         message(project, " cloned into: ", dir)
       }
     }  
+  message("\nWOHOO, done! \n\nOpen the .Rproj file in the project folders to use the systems.")
   }
   
-  message("\nWOHOO, done! \n\nOpen the .Rproj file in the project folders to use the systems.")
 }
 
 
