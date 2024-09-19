@@ -194,7 +194,7 @@ DevelopSystems <- function(path){
 }
 
 check_R_version <- function(){
-  if(version$minor < 4) stop("Du bruker en gammel versjon av R, installer versjon 4.1 eller nyere")
+  if(version$minor < 4) stop("Du bruker en gammel versjon av R, installer versjon 4.4.0 eller nyere")
 }
 
   
