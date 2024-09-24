@@ -31,9 +31,7 @@ ProfileSystems <- function(path = NULL,
                            norgeo = FALSE,
                            orgdata = FALSE,
                            qualcontrol = FALSE,
-                           produksjon = FALSE,
-                           khfunctions = FALSE,
-                           KHvalitetskontroll = FALSE){
+                           produksjon = FALSE){
   
   check_R_version()
   
@@ -43,8 +41,6 @@ ProfileSystems <- function(path = NULL,
     orgdata <- TRUE
     qualcontrol <- TRUE
     produksjon <- TRUE
-    khfunctions <- TRUE
-    KHvalitetskontroll <- TRUE
   }
   
   if(isTRUE(packages)){
@@ -102,8 +98,8 @@ ProfileSystems <- function(path = NULL,
     message("\nInstalling qualcontrol...")
     remotes::install_github("helseprofil/qualcontrol")
   }
-  # Set base folder for installing projects. Always create the helseprofil folder as well. 
-  message("\nGenerating folders:")
+  
+  # Set base folder for installing projects. Always create the helseprofil folder as well.
   helseprofil <- file.path(fs::path_home(), "helseprofil")
   if(!fs::dir_exists(helseprofil)){
     fs::dir_create(helseprofil)
@@ -119,59 +115,46 @@ ProfileSystems <- function(path = NULL,
       cat("\n- ", path)
   }
 
-  projects <- c("produksjon", "khfunctions", "KHvalitetskontroll")
-  isProjects <- c(produksjon, khfunctions, KHvalitetskontroll)
-  projects <- projects[isProjects]
-  
-  if(length(projects) > 0){
-    
-    message("\n\nR Projects will be installed into ", path)
-    
-    for(project in projects){
-      branch <- data.table::fcase(project == "khfunctions", "master",
-                                  default = "main")
-      message("\nInstalling ", project, " (", branch, " branch)...")
-      repo <- paste0("https://github.com/helseprofil/", project, ".git")
-      dir <- file.path(path, project)
+  if(isTRUE(produksjon)){
+    message("\nInstalling produksjon (main branch) into ", path)
+      repo <- paste0("https://github.com/helseprofil/produksjon.git")
+      dir <- file.path(path, "produksjon")
       if(fs::dir_exists(dir)){
         setwd(dir)
-        message("\n", dir, " already exists, updating master branch to current GitHub version...")
-        invisible(system(paste0("git fetch origin ", branch)))
-        invisible(system(paste0("git reset --hard origin/", branch)))
+        message("\n", dir, " already exists, updating main branch to current GitHub version...")
+        invisible(system("git fetch origin main"))
+        invisible(system("git reset --hard origin/main"))
         invisible(system("git pull"))
       } else {
         invisible(system(paste("git clone", repo, dir)))
-        message(project, " cloned into: ", dir)
       }
     }  
-  message("\nWOHOO, done! \n\nOpen the .Rproj file in the project folders to use the systems.")
-  }
-  
+  message("\nWOHOO, done! \n\nOpen the .Rproj file in the produksjon project to use the systems")
 }
 
 
 #' Clones all projects into a folder
 #'
 #' @param path 
-DevelopSystems <- function(path){
+DevelopSystems <- function(path,
+                           getupdates = FALSE){
   
   check_R_version()
 
-  projects <- c("misc", 
-                "manual", 
+  projects <- c("norgeo", 
                 "produksjon",
-                "khfunctions", 
-                "KHvalitetskontroll", 
-                "norgeo", 
                 "orgdata", 
+                "khfunctions", 
                 "orgcube",
                 "qualcontrol",
                 "config", 
                 "GeoMaster", 
+                "misc", 
+                "manual", 
                 "snutter")
   
   if(is.null(path)){
-    stop("Path not set")
+    path <- file.path(fs::path_home(), "helseprofil")
   }
   
   if(!fs::dir_exists(path)){
@@ -180,21 +163,27 @@ DevelopSystems <- function(path){
   
   for(project in projects){
     
-    repo <- paste0("https://github.com/helseprofil/", project, ".git")
     dir <- file.path(path, project)
+    repo <- paste0("https://github.com/helseprofil/", project, ".git")
+    
+    if(fs::dir_exists(dir) && isTRUE(getupdates)){
+      setwd(dir)
+      branch <- ifelse(project == "khfunctions", "master", "main")
+      message("\n", project, " already exists, updating ", branch, " branch to current GitHub version...")
+      invisible(system("git fetch origin", branch))
+      invisible(system("git reset --hard origin/main"))
+      invisible(system("git pull"))
+    } 
     
     if(!fs::dir_exists(dir)){
       invisible(system(paste("git clone", repo, dir)))
-      message(project, " cloned into: ", dir)
-    } else {
-      message(dir, " already exists")
+      message(project, " cloned into ", dir)
     }
-    
   }
 }
 
 check_R_version <- function(){
-  if(version$minor < 4) stop("Du bruker en gammel versjon av R, installer versjon 4.4.0 eller nyere")
+  if(version$major <= 4 & version$minor < 4) stop("Du bruker en gammel versjon av R, installer versjon 4.4.0 eller nyere")
 }
 
   
