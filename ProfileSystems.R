@@ -143,6 +143,7 @@ DevelopSystems <- function(path,
 
   projects <- c("norgeo", 
                 "produksjon",
+                "backend",
                 "orgdata", 
                 "khfunctions", 
                 "orgcube",
@@ -168,7 +169,7 @@ DevelopSystems <- function(path,
     
     if(fs::dir_exists(dir) && isTRUE(getupdates)){
       setwd(dir)
-      branch <- ifelse(project == "khfunctions", "master", "main")
+      branch <- ifelse(project %in% c("khfunctions", "GeoMaster"), "master", "main")
       message("\n", project, " already exists, updating ", branch, " branch to current GitHub version...")
       invisible(system("git fetch origin", branch))
       invisible(system("git reset --hard origin/main"))
